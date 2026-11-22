@@ -1,9 +1,9 @@
-# Expose only .bps, .ips, .txt, and README*.md files (plus root .gitignore)
+# Expose only .bps, .ips, .txt, and *README*.md files (plus root .gitignore)
 *
 !*/
 
 !/.gitignore
-!README*.md
+!*README*.md
 !*.bps
 !*.ips
 !*.txt
