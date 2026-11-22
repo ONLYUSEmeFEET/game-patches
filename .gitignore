@@ -1,0 +1,15 @@
+# Expose only .bps, .ips, and .txt files (plus root README.md and .gitignore)
+*
+!*/
+
+!/.gitignore
+!/README.md
+!*.bps
+!*.ips
+!*.txt
+
+# Never expose local ROMs or internal tool/work directories
+roms/
+**/roms/
+tools/
+**/tools/
