@@ -12,6 +12,7 @@ A collection of retro console ROM hacks, patches (`.bps` / `.ips`), build script
 | **Rampage - World Tour Unleashed** | Game Boy Color | [`rampage-world-tour-unleashed/`](rampage-world-tour-unleashed/) | `.ips` |
 | **Castlevania: Symphony of the Night Reborn v0.2** | Tiger Game.Com | [`castlevania-sotn-reborn/`](castlevania-sotn-reborn/) | `.bps`, `.ips` |
 | **Sonic Jam Reborn v0.2** | Tiger Game.Com | [`sonic-jam-reborn/`](sonic-jam-reborn/) | `.bps`, `.ips` |
+| **Ranger of Rage 2** | Sega Genesis / Mega Drive | [`ranger-of-rage-2/`](ranger-of-rage-2/) | `.ips` |
 
 ## How to Apply Patches
 1. Place your clean source ROM in your local `roms/` folder (ignored by Git).
