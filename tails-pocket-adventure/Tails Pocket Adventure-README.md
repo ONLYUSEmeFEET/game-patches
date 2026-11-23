@@ -1,5 +1,5 @@
 ================================================================================
-Tails Pocket Adventure (v3)
+Tails Pocket Adventure (v3.1)
 ROM Hack for Sonic The Hedgehog - Pocket Adventure (Neo Geo Pocket Color)
 ================================================================================
 
@@ -9,11 +9,12 @@ Play through Single Player mode as Miles "Tails" Prower, complete with his
 signature flight ability, custom Sonic Advance-style flying sprites, Tails HUD
 & 1UP icon, Tornado role swaps, and a custom TAILS title screen logo.
 
-Features (v3)
--------------
+Features (v3.1)
+---------------
 1. Playable Tails in Single Player
    - Single Player starts with Tails instead of Sonic.
-   - Tails can fly by pressing A (Jump) again while jumping or rolling.
+   - Tails can fly by pressing A (Jump) again at any point while airborne
+     (including while moving left/right or quick-tapping mid-jump).
    - Balanced flight physics (3x ascent height, gravity & fall speed cap),
      visible-screen top ceiling collision (works in normal stages & boss
      arenas), and upward/downward flight damage against enemies.
@@ -26,8 +27,9 @@ Features (v3)
    - In Single Player Tornado sequences and ending scenes, Sonic pilots the
      Tornado while Tails rides on the wing.
 
-3. HUD, Title Screen & Quality-of-Life
+3. HUD, Title Screen, Goalpost & Quality-of-Life
    - Tails orange 1UP lives / HUD face icon.
+   - End-of-Act Goalpost / Signpost updated with custom Tails signpost art.
    - Title Screen logo updated to "TAILS POCKET ADVENTURE" (on both the
      PRESS "A" BUTTON and START/CONTINUE/GO TO ROOM screens).
    - NGPC ROM header cart title updated to "TAILS POCKET" (12-byte header
@@ -45,8 +47,8 @@ Controls
 
 Patching Instructions
 ---------------------
-Apply either `Tails Pocket Adventure v3.bps` (recommended, verifies source
-checksums) or `Tails Pocket Adventure v3.ips` using Floating IPS (Flips),
+Apply either `Tails Pocket Adventure v3.1.bps` (recommended, verifies source
+checksums) or `Tails Pocket Adventure v3.1.ips` using Floating IPS (Flips),
 RomPatcher.js, or a compatible patcher to an unmodified clean copy of:
 
   Sonic The Hedgehog - Pocket Adventure (World).ngc
@@ -58,14 +60,14 @@ Source ROM: Sonic The Hedgehog - Pocket Adventure (World).ngc (2,097,152 bytes)
   MD5   : B8A899AE2B0F1DFA0DB5417DE745A51E
   SHA-1 : 3FE15D4374C4CA073AA0393FCFCAD0055BD345AB
 
-Patched ROM: Tails Pocket Adventure v3.ngc (2,097,152 bytes)
-  CRC32 : D4869A0C
-  MD5   : 1E0D27D99A50550E37B4AF90A05BA38B
-  SHA-1 : 2FA28195F667E2EBA43FD70DEEEA8423159D8868
+Patched ROM: Tails Pocket Adventure v3.1.ngc (2,097,152 bytes)
+  CRC32 : 24C88D6A
+  MD5   : 7F95C3D6367D3EDE3555EA7C2F4CC331
+  SHA-1 : 7A1344246D3BD1C5A5941E5961404E6B6B45DE9E
 
 Patch Files:
-  Tails Pocket Adventure v3.bps (13,128 bytes, Patch CRC32: F0888F37)
-  Tails Pocket Adventure v3.ips (13,299 bytes)
+  Tails Pocket Adventure v3.1.bps (13,987 bytes, Patch CRC32: D2D0F406)
+  Tails Pocket Adventure v3.1.ips (14,199 bytes)
 
 Credits
 -------
