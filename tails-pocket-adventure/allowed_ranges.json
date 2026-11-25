@@ -1,0 +1,310 @@
+{
+  "ranges": [
+    {
+      "start": "0x000024",
+      "end": "0x00002F",
+      "kind": "data",
+      "label": "NGPC ROM Header Cart Title (TAILS POCKET)"
+    },
+    {
+      "start": "0x015464",
+      "end": "0x015473",
+      "kind": "data",
+      "label": "HUD/Lives Tails face tile (tid 2195)"
+    },
+    {
+      "start": "0x015564",
+      "end": "0x015573",
+      "kind": "data",
+      "label": "1UP Monitor Tails face tile (tid 2211)"
+    },
+    {
+      "start": "0x016354",
+      "end": "0x0163D3",
+      "kind": "data",
+      "label": "Goalpost Front R tiles (tid 2434..2441)"
+    },
+    {
+      "start": "0x0163E4",
+      "end": "0x016443",
+      "kind": "data",
+      "label": "Goalpost Angle R tiles (tid 2443..2448)"
+    },
+    {
+      "start": "0x016464",
+      "end": "0x016543",
+      "kind": "data",
+      "label": "Goalpost Angle L & Front L tiles (tid 2451..2464)"
+    },
+    {
+      "start": "0x03AEBE",
+      "end": "0x03AEC3",
+      "kind": "hook",
+      "label": "Enable Playable Tails in Single Player"
+    },
+    {
+      "start": "0x03B203",
+      "end": "0x03B209",
+      "kind": "hook",
+      "label": "Hook 5: Title Screen Option -> Debug/Level Select"
+    },
+    {
+      "start": "0x03BFFC",
+      "end": "0x03C005",
+      "kind": "hook",
+      "label": "Hook 1: VBlank Dynamic Tile Streamer"
+    },
+    {
+      "start": "0x03C081",
+      "end": "0x03C086",
+      "kind": "hook",
+      "label": "Hook 2: Shadow OAM Metasprite Reader"
+    },
+    {
+      "start": "0x03D376",
+      "end": "0x03D377",
+      "kind": "data",
+      "label": "Single-Player Tornado pilot swap"
+    },
+    {
+      "start": "0x03D504",
+      "end": "0x03D509",
+      "kind": "data",
+      "label": "Tornado palette entry 0x024A"
+    },
+    {
+      "start": "0x03D56A",
+      "end": "0x03D56F",
+      "kind": "data",
+      "label": "Title Screen OAM palette 0x025B (Tails blink)"
+    },
+    {
+      "start": "0x03D576",
+      "end": "0x03D57B",
+      "kind": "data",
+      "label": "Title Screen SP1 palette 0x025D (Tails portrait)"
+    },
+    {
+      "start": "0x03D57E",
+      "end": "0x03D57F",
+      "kind": "data",
+      "label": "Title Screen SP2 palette 0x025E badge background (deep Tails orange)"
+    },
+    {
+      "start": "0x03D584",
+      "end": "0x03D585",
+      "kind": "data",
+      "label": "Title Screen SP1 palette 0x025F badge background (deep Tails orange)"
+    },
+    {
+      "start": "0x03D5FA",
+      "end": "0x03D5FF",
+      "kind": "data",
+      "label": "Tornado palette entry 0x0273"
+    },
+    {
+      "start": "0x19AAFD",
+      "end": "0x19AB08",
+      "kind": "hook",
+      "label": "Hook 3: Player 1 Airborne Loop (Flight Hook)"
+    },
+    {
+      "start": "0x19C7EC",
+      "end": "0x19C7EF",
+      "kind": "hook",
+      "label": "Hook 4: Hide Extra Tails During Flight"
+    },
+    {
+      "start": "0x19DC21",
+      "end": "0x19DC2A",
+      "kind": "hook",
+      "label": "HUD / 1UP Monitor Palette branch fix"
+    },
+    {
+      "start": "0x1CA5DD",
+      "end": "0x1CA5E4",
+      "kind": "hook",
+      "label": "Hook 7a: Special Stage Intro Pose Tails Palette"
+    },
+    {
+      "start": "0x1CA6AC",
+      "end": "0x1CA6B3",
+      "kind": "hook",
+      "label": "Hook 7b: Special Stage Win Pose Tails Palette"
+    },
+    {
+      "start": "0x1CAB65",
+      "end": "0x1CAB96",
+      "kind": "data",
+      "label": "Special Stage standing/pose animation metasprite pointers (Sonic -> Tails)"
+    },
+    {
+      "start": "0x1CE458",
+      "end": "0x1CE467",
+      "kind": "hook",
+      "label": "Hook 6: Goalpost Signpost Tails Palette"
+    },
+    {
+      "start": "0x1CE59B",
+      "end": "0x1CE603",
+      "kind": "data",
+      "label": "Goalpost overlay metasprite pointer remaps"
+    },
+    {
+      "start": "0x1CFAD0",
+      "end": "0x1CFADF",
+      "kind": "data",
+      "label": "Title Card silhouette animation metasprite pointers (Sonic -> Tails)"
+    },
+    {
+      "start": "0x1D35F4",
+      "end": "0x1D3A1B",
+      "kind": "data",
+      "label": "Original Character Frame Table fixes"
+    },
+    {
+      "start": "0x1D3A31",
+      "end": "0x1D3A3B",
+      "kind": "hook",
+      "label": "Character Frame Table count & relocated pointer"
+    },
+    {
+      "start": "0x1D4565",
+      "end": "0x1D4566",
+      "kind": "data",
+      "label": "Special Stage Chaos Emerald text metasprite pointer"
+    },
+    {
+      "start": "0x1D48B8",
+      "end": "0x1D48B8",
+      "kind": "data",
+      "label": "1UP Monitor Box icon layer switch #1"
+    },
+    {
+      "start": "0x1D496C",
+      "end": "0x1D496C",
+      "kind": "data",
+      "label": "1UP Monitor Box icon layer switch #2"
+    },
+    {
+      "start": "0x0440B8",
+      "end": "0x0440E7",
+      "kind": "data",
+      "label": "Sky Chase Tornado BG cockpit row 0 tiles (Sonic)"
+    },
+    {
+      "start": "0x044108",
+      "end": "0x044137",
+      "kind": "data",
+      "label": "Sky Chase Tornado BG cockpit row 1 tiles (Sonic)"
+    },
+    {
+      "start": "0x1E3890",
+      "end": "0x1E38BD",
+      "kind": "data",
+      "label": "Title Screen menu tile/map pointers"
+    },
+    {
+      "start": "0x1E3AE1",
+      "end": "0x1E3AE4",
+      "kind": "data",
+      "label": "Title Screen static skin OAM pointer (cleared)"
+    },
+    {
+      "start": "0x1E3B09",
+      "end": "0x1E3B0C",
+      "kind": "data",
+      "label": "Title Screen static glove OAM pointer (cleared)"
+    },
+    {
+      "start": "0x1E3B22",
+      "end": "0x1E3B95",
+      "kind": "data",
+      "label": "Title Screen OAM animation scripts (Tails blink)"
+    },
+    {
+      "start": "0x1E727D",
+      "end": "0x1E728C",
+      "kind": "hook",
+      "label": "Ending Cutscene Tails Palette hook call"
+    },
+    {
+      "start": "0x1E7661",
+      "end": "0x1E76E4",
+      "kind": "data",
+      "label": "Ending Cutscene wing-rider frame pointer remaps"
+    },
+    {
+      "start": "0x1E76E7",
+      "end": "0x1E76F6",
+      "kind": "data",
+      "label": "Tornado propeller + Sonic pilot metasprite pointers"
+    },
+    {
+      "start": "0x1E7B21",
+      "end": "0x1E7B2C",
+      "kind": "hook",
+      "label": "Title Screen intro skip Sonic pop-up -> jump directly to Tails title (0x1E7CF9)"
+    },
+    {
+      "start": "0x1E7CF9",
+      "end": "0x1E7D1C",
+      "kind": "data",
+      "label": "Title Screen PRESS A BUTTON tile/map pointers"
+    },
+    {
+      "start": "0x1E7D9E",
+      "end": "0x1E7E4F",
+      "kind": "data",
+      "label": "Title Screen intro pop-up OAM scripts (cleared)"
+    },
+    {
+      "start": "0x1EAD8B",
+      "end": "0x1EAD8B",
+      "kind": "data",
+      "label": "SFX 0x00A2 (Tails flying SFX) volume"
+    },
+    {
+      "start": "0x1F3000",
+      "end": "0x1F4FFF",
+      "kind": "cave",
+      "label": "Custom Title Screen tileset"
+    },
+    {
+      "start": "0x1F5000",
+      "end": "0x1F52FF",
+      "kind": "cave",
+      "label": "Custom Title Screen Scroll Plane 1 map"
+    },
+    {
+      "start": "0x1F5300",
+      "end": "0x1F55FF",
+      "kind": "cave",
+      "label": "Custom Title Screen Scroll Plane 2 map"
+    },
+    {
+      "start": "0x1FAC00",
+      "end": "0x1FAFFF",
+      "kind": "cave",
+      "label": "Custom TLCS-900/H routines & flying script"
+    },
+    {
+      "start": "0x1FB000",
+      "end": "0x1FCFFF",
+      "kind": "cave",
+      "label": "Custom 8x8 2bpp tiles"
+    },
+    {
+      "start": "0x1FD000",
+      "end": "0x1FDFFF",
+      "kind": "cave",
+      "label": "Custom OAM metasprites"
+    },
+    {
+      "start": "0x1FE000",
+      "end": "0x1FEFFF",
+      "kind": "cave",
+      "label": "Relocated & extended Character Frame Table"
+    }
+  ]
+}

@@ -1,15 +1,36 @@
-# Expose only .bps, .ips, .txt, and *README*.md files (plus root .gitignore)
+# Strict whitelist: only release patches, docs, shared patchkit, and Antigravity team files
 *
 !*/
 
 !/.gitignore
+!/AGENTS.md
 !*README*.md
+!**/PROJECT_CONTEXT.md
+!**/docs/
+!**/docs/*.md
+!**/allowed_ranges.json
 !*.bps
 !*.ips
 !*.txt
 
-# Never expose local ROMs or internal tool/work directories
+# Antigravity workspace skills
+!/.agents/
+!/.agents/**
+
+# Shared patch-agnostic build/verify engine
+!/tools/
+!/tools/patchkit/
+!/tools/patchkit/**
+
+# Clean source assembly & build scripts across all projects (no ripped art or ROMs)
+!**/build_patch.py
+!**/src/
+!**/src/**
+
+# Explicitly block ROMs, scratch work, ripped assets, and Python caches
 roms/
 **/roms/
-tools/
-**/tools/
+**/work/
+**/sprite_sheets_to_mod/
+**/__pycache__/
+*.pyc
