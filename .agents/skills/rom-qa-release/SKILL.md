@@ -19,8 +19,17 @@ Verify patched ROM behavior, enforce automated build/diff gates, and cut clean, 
    - Never weaken assertions, diff ranges, or tests just to make a run pass.
 
 2. **Execute Emulator Verification**
-   - If the project has a scripted emulator test runner (e.g., JSON frame/input scripts capturing PNGs), run it and visually inspect the captured screenshots.
-   - Otherwise (or in addition), output a targeted save-state test checklist covering:
+   - **Never rely solely on offline tile decode-back for user-reported visual bugs or multi-phase screens.** Boot the built ROM in a headless emulator capture and inspect live frames with `read_file` across both **transition/intro frames** and **settled frames** (after copyright/menu text appears).
+   - **Windows / PowerShell Headless RetroArch Recipe:**
+     ```powershell
+     $rom = "`"C:\path\to\patched.ngc`""  # Always double-quote paths with spaces inside ArgumentList
+     $p = Start-Process "S:\Retroarch\retroarch.exe" -ArgumentList @(
+       "-L", "S:\Retroarch\cores\<core>_libretro.dll", $rom,
+       "--max-frames=700", "--max-frames-ss", "--max-frames-ss-path=$outPng"
+     ) -PassThru
+     $p.WaitForExit(25000) | Out-Null
+     ```
+   - When automated frame captures are unavailable or in addition to them, output a targeted save-state test checklist covering:
      - Core mechanic in neutral state
      - Facing left vs. right (`H-flip` / `V-flip` & sub-sprite alignment)
      - State transitions (springs, slopes, water, hurt/death/i-frames, bosses, act-clear/signpost)

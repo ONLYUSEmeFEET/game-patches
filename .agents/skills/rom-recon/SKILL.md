@@ -17,6 +17,7 @@ Perform disciplined, read-only reconnaissance on any retro console ROM so subseq
 
 2. **Trace Before Proposing Changes**
    - Inspect existing build scripts, `.asm` files, or disassemblies to find relevant routines, tables, and callers.
+   - **Enumerate all instances & rendering paths:** Never assume a cutscene OAM sprite is reused in playable gameplay (or vice versa). Before patching a recurring asset (vehicle, portrait, boss, title screen), check both OAM tables and Scroll Plane / BG tilemaps across every stage, cutscene, and intro phase.
    - For every address or symbol discovered, record:
      - **File offset** and **CPU address** (when banked or mapped, e.g., `ROM 0x1FAC00` = `CPU 0x3FAC00`).
      - **Exact original bytes** at candidate hook sites (needed for `assert_and_patch`).

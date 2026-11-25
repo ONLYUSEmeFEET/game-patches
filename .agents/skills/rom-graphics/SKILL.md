@@ -28,8 +28,10 @@ Convert, pack, and visually verify art assets using the exact display hardware r
 
 3. **Title Screen & Multi-Plane Background Safety**
    - Before touching any title screen or background:
-     1. Dump the **full composited screen** (all scroll planes + palettes) and map **which tile IDs are shared** with other UI/text elements so clearing one region never corrupts another.
-     2. Identify **every ROM loader** that draws that screen (e.g., `PRESS START` vs. `START/CONTINUE` variants) so all variants stay consistent.
+     1. Dump the **full composited screen** (all scroll planes + palettes) and inspect raw tilemap headers (e.g., 4-byte `w, h, cnt` prefixes) before indexing `(row, col)` offsets.
+     2. Map **which tile IDs are shared** and **which upper VRAM tile IDs are reserved** for dynamically drawn text, fonts, or animated water/HUD tiles (never treat unreferenced upper tiles in a static map as free without verifying the static tile count boundary).
+     3. Identify **every phase and loader** of that screen (intro/pop-up animations, settled idle loop, and menu variants such as `PRESS START` vs. `START/CONTINUE`) so earlier phases never flash unpatched assets.
+     4. When tight on static tile slots, deduplicate repeated/cleared tiles and cull `SP2` background tiles that are 100% occluded by opaque `SP1` foreground pixels before expanding tile counts.
 
 4. **Mandatory Decode-Back Visual Inspection (No Blind Commits)**
    - After encoding tiles/tilemaps/metasprites into the patched ROM, **decode those exact patched ROM bytes back** using the target hardware's palette and layer rules.
