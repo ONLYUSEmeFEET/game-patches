@@ -29,6 +29,9 @@ Write safe, maintainable assembly routines and ROM hooks tailored to the CPU/ISA
      - Grounded vs. airborne vs. rolling/special states
      - Springs, slopes, moving platforms, and water/underwater physics
      - Hurt/invulnerability, death, cutscenes, warps, bosses, and end-of-act transitions
+   - **Custom RAM & Control-Lock Discipline:**
+     - Never repurpose unverified player-struct offsets for custom timers/flags (engine transitions may silently clear them). Allocate custom state in a **verified-free WRAM gap** documented in `PROJECT_CONTEXT.md`, and use explicit latch flags cleared only when leaving the target state.
+     - Respect engine control-lock timers (e.g., `P_CTRL_LOCK`) before reading ability inputs or firing ability SFX.
 
 5. **Verify Build & Diff Gate**
    - Assemble and run the project's build script.

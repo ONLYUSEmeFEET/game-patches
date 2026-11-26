@@ -36,8 +36,10 @@ Verify patched ROM behavior, enforce automated build/diff gates, and cut clean, 
      - Palette/HUD/title-screen visual sanity
 
 3. **Prepare Release Packaging (BPS-Only)**
+   - **Archive previous patches cleanly:** Move superseded `.bps` releases into `<project>/archived/` so only the latest `.bps` sits in the project root. If live test builds overwrote the previous `.bps` in the working tree, restore the authentic previous patch via `git checkout HEAD -- <old.bps>` before moving it to `archived/`.
    - Verify no ROMs, scratch work, or ripped assets are staged in Git (`git status`).
    - Update version numbers, feature notes, and verified checksums (`CRC32`, `MD5`, `SHA-1`, BPS size & Patch CRC32) in:
      - `<project>/*README*.md`
      - Root `README.md`
+   - Keep official release links (e.g., ROMhacking.net) and `**/screenshots/*.png` galleries synced in `README.md` without weakening `.gitignore` blocks on ROMs or `sprite_sheets_to_mod/`.
    - Keep legacy `.ips` files untouched in older projects unless explicitly retiring them during a new release.

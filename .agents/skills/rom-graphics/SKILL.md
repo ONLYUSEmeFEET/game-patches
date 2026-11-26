@@ -16,13 +16,13 @@ Convert, pack, and visually verify art assets using the exact display hardware r
    - Confirm:
      - **Tile bit layout** (e.g., NGPC chunky 2bpp `uint16` LE/row vs. GB/NES planar 2bpp vs. Genesis 4bpp vs. Game.com 2bpp framebuffer). Never assume planar if the hardware is chunky.
      - **Palette encoding** (bit depth, channel order, endianness, and transparent index—usually `0` on sprites).
-     - **Layering / metasprite format** (single-layer vs. Base + Overlay multi-palette sprites, relative `dx/dy` signed offsets, tile deduplication IDs).
-     - **Hardware limits** (max total sprites, per-scanline sprite cap, VBlank tile-streaming budget).
+     - **Layering / metasprite format** (single-layer vs. Base + Overlay multi-palette sprites, relative `dx/dy` signed offsets, tile deduplication IDs, and whether header `count` tracks total hardware sprites vs. entry records when decoding chain opcodes like `0xFFFF`).
+     - **Hardware OAM budgets** (max total on-screen sprites, per-scanline cap, VBlank streaming budget). Always budget **new metasprite + player + HUD + objects ≤ hardware cap**—e.g., trim 17 px tall text/sprites to 16 px (2 tiles high instead of 3), pack multi-line OAM banners independently, and assert `len(tiles) <= <budget>` in the builder so an oversized banner never vanishes or pushes the player off-screen.
 
 2. **Extract → Edit 1x PNG → Import (No Procedural Pixel Art in Code)**
    - **Never draw sprites, HUD icons, or title logos procedurally in Python** (no `rect()` letter rasterizers or ASCII pixel arrays) when a `1x` PNG template can be extracted and edited.
    - For new or modified ROM art:
-     1. **Extract** the existing ROM tiles/tilemap + hardware palette into a `1x` editable PNG and a locked palette swatch (`patchkit.save_palette_swatch`).
+     1. **Extract** the existing clean-ROM sprites/tiles + hardware palette into a fresh `1x` editable PNG template with locked anchor centers and a palette swatch (`patchkit.save_palette_swatch`)—never stack iterative edits on top of a noisy pre-converted sheet when the clean stock sprites are available.
      2. Let the user edit the `1x` PNG in Paint.NET / Aseprite (or supply a sprite sheet).
      3. **Import** deterministically with `patchkit.validate_palette_pixels()` so any unmapped RGB pixel fails loudly with exact `(x, y, rgb)` coordinates instead of silently corrupting colors.
 
