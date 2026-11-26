@@ -8,7 +8,7 @@ A collection of retro console ROM hacks, patches (`.bps` / `.ips`), build script
 
 | Patch | System | Folder | Formats |
 | :--- | :--- | :--- | :--- |
-| **Tails Pocket Adventure v3.3** | Neo Geo Pocket Color | [`tails-pocket-adventure/`](tails-pocket-adventure/) | `.bps` |
+| **Tails Pocket Adventure v3.4** | Neo Geo Pocket Color | [`tails-pocket-adventure/`](tails-pocket-adventure/) | `.bps` |
 | **Rampage - World Tour Unleashed** | Game Boy Color | [`rampage-world-tour-unleashed/`](rampage-world-tour-unleashed/) | `.ips` |
 | **Castlevania: Symphony of the Night Reborn v0.2** | Tiger Game.Com | [`castlevania-sotn-reborn/`](castlevania-sotn-reborn/) | `.bps`, `.ips` |
 | **Sonic Jam Reborn v0.2** | Tiger Game.Com | [`sonic-jam-reborn/`](sonic-jam-reborn/) | `.bps`, `.ips` |

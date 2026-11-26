@@ -210,7 +210,7 @@ orig_signpost_pal:
     db 0d8h, 0adh, 23h, 01h, 1dh, 0b3h, 0e3h, 23h
     ret
 
-; --- Special Stage Standing Pose Tails Palette Hook (called from 0x1CA5DE, 0x1CA6AD) ---
+; --- Special Stage Standing Pose Tails Palette Hook (called from 0x1CA5DD, 0x1CA6AC) ---
 ss_tails_pal_hook:
     cp (RAM_CHAR_ID), CHAR_TAILS
     jr ne, orig_ss_pal
@@ -223,6 +223,34 @@ ss_tails_pal_hook:
     ret
 orig_ss_pal:
     db 0d8h, 0afh, 23h, 01h, 1dh, 0b3h, 0e3h, 23h
+    ret
+
+; --- Special Stage Gameplay Init Tails Palette Hook (called from 0x1CA3B0) ---
+ss_gameplay_pal_hook:
+    cp (RAM_CHAR_ID), CHAR_TAILS
+    jr ne, orig_ss_gp_pal
+    ld wa, PAL_TAILS_BASE
+    ld c, 00h
+    call FN_LOAD_PALETTE
+    ld wa, PAL_TAILS_OVER
+    ld c, 01h
+    call FN_LOAD_PALETTE
+    ret
+orig_ss_gp_pal:
+    db 0d8h, 0a9h, 23h, 01h, 1dh, 0b3h, 0e3h, 23h
+    db 0d8h, 0a8h, 23h, 00h, 1dh, 0b3h, 0e3h, 23h
+    ret
+
+; --- Special Stage Base Palette Reload Hook (called from 0x1CA7C6) ---
+ss_base_pal_hook:
+    cp (RAM_CHAR_ID), CHAR_TAILS
+    jr ne, orig_ss_base_pal
+    ld wa, PAL_TAILS_BASE
+    ld c, 00h
+    call FN_LOAD_PALETTE
+    ret
+orig_ss_base_pal:
+    db 0d8h, 0a8h, 23h, 00h, 1dh, 0b3h, 0e3h, 23h
     ret
 
 ; --- 4-Frame Shimmer-Free NGPC-Style Tails Flying Animation Script (0x85..0x88) ---

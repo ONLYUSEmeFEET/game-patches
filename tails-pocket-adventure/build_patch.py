@@ -24,6 +24,7 @@ from assets import (
     patch_chaos_emerald_text,
     patch_goalpost_from_sheet,
     patch_hud_tails_head,
+    patch_special_stage_running,
     patch_special_stage_standing,
     patch_title_card_silhouettes,
     patch_title_tails_text,
@@ -41,7 +42,7 @@ from patchkit import (
 )
 
 # Single source of truth for release version & clean base ROM
-VERSION = "3.3"
+VERSION = "3.4"
 EXPECTED_SRC_CRC32 = "356F0849"
 EXPECTED_SRC_SIZE = 2_097_152
 
@@ -98,6 +99,7 @@ def main() -> int:
     patch_title_card_silhouettes(data, DEFAULT_SHEETS_DIR / "title_card_silhouette_1x.png", alloc)
     patch_tornado_sonic_cockpit(data, DEFAULT_SHEETS_DIR / "tornado_pilot_1x.png", alloc)
     patch_special_stage_standing(data, DEFAULT_SHEETS_DIR / "special_stage_tails_9frames_1x.png", alloc)
+    patch_special_stage_running(data, DEFAULT_SHEETS_DIR / "ss_tails_running_1x.png", alloc)
     patch_title_tails_text(data, DEFAULT_SHEETS_DIR / "title_screen_tails_1x.png", alloc)
 
     tile_blob = alloc.tile_blob
@@ -188,6 +190,20 @@ def main() -> int:
         b"\xd8\xac\x23\x00\x1d\xb3\xe3\x23\xd8\xad\x23\x01\x1d\xb3\xe3\x23",
         tlcs900_call(sym["signpost_pal_hook"]) + b"\x00" * 12,
         label="Hook 6: Goalpost Signpost Palette",
+    )
+    assert_and_patch(
+        data,
+        0x1CA3B0,
+        b"\xd8\xa9\x23\x01\x1d\xb3\xe3\x23\xd8\xa8\x23\x00\x1d\xb3\xe3\x23",
+        tlcs900_call(sym["ss_gameplay_pal_hook"]) + b"\x00" * 12,
+        label="Hook 7c: Special Stage Gameplay Init Tails Palette",
+    )
+    assert_and_patch(
+        data,
+        0x1CA7C6,
+        b"\xd8\xa8\x23\x00\x1d\xb3\xe3\x23",
+        tlcs900_call(sym["ss_base_pal_hook"]) + b"\x00" * 4,
+        label="Hook 7d: Special Stage Base Palette Reload",
     )
     assert_and_patch(
         data,

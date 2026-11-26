@@ -121,6 +121,12 @@
       "label": "HUD / 1UP Monitor Palette branch fix"
     },
     {
+      "start": "0x1CA3B0",
+      "end": "0x1CA3BF",
+      "kind": "hook",
+      "label": "Hook 7c: Special Stage Gameplay Init Tails Palette"
+    },
+    {
       "start": "0x1CA5DD",
       "end": "0x1CA5E4",
       "kind": "hook",
@@ -131,6 +137,18 @@
       "end": "0x1CA6B3",
       "kind": "hook",
       "label": "Hook 7b: Special Stage Win Pose Tails Palette"
+    },
+    {
+      "start": "0x1CA7C6",
+      "end": "0x1CA7CD",
+      "kind": "hook",
+      "label": "Hook 7d: Special Stage Base Palette Reload"
+    },
+    {
+      "start": "0x1CA997",
+      "end": "0x1CAB63",
+      "kind": "data",
+      "label": "Special Stage behind-view running & hurt metasprite pointers (Sonic -> Tails)"
     },
     {
       "start": "0x1CAB65",
@@ -167,6 +185,30 @@
       "end": "0x1D3A3B",
       "kind": "hook",
       "label": "Character Frame Table count & relocated pointer"
+    },
+    {
+      "start": "0x0504D4",
+      "end": "0x050513",
+      "kind": "data",
+      "label": "Special Stage Results Tally 'TAILS' BG Row 1 tiles (0x07..0x0A)"
+    },
+    {
+      "start": "0x050524",
+      "end": "0x050533",
+      "kind": "data",
+      "label": "Special Stage Results Tally 'TAILS' BG Row 1 tile (0x0C)"
+    },
+    {
+      "start": "0x050594",
+      "end": "0x0505F3",
+      "kind": "data",
+      "label": "Special Stage Results Tally 'TAILS' BG Row 2 tiles (0x13..0x18)"
+    },
+    {
+      "start": "0x056D52",
+      "end": "0x056D5D",
+      "kind": "data",
+      "label": "Special Stage Results Tally 'TAILS' BG Row 0 outline tilemap"
     },
     {
       "start": "0x1D4565",

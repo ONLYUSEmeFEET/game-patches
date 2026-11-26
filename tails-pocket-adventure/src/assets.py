@@ -544,24 +544,73 @@ def patch_goalpost_from_sheet(data: bytearray, sheet_path: Path, alloc: TileAndM
 
 
 def patch_chaos_emerald_text(data: bytearray, ce_path: Path, alloc: TileAndMetaAllocator) -> None:
-    """Replace Special Stage 'SONIC GOT A CHAOS EMERALD!' with Tails version."""
+    """Replace Special Stage 'SONIC GOT A CHAOS EMERALD!' on BOTH half-pipe (OAM) & Results Tally (BG)."""
     im_ce = Image.open(ce_path).convert("RGB")
+    # Original 0x31EC uses ONLY index 1 (fill) and index 2 (black outline).
+    # Pack Line 1 (py < 18, 16px tall) and Line 2 (py >= 18, 16px tall) independently so every column is
+    # strictly 2 tiles high (<= 52 sprites total, staying safely under the 64-sprite NGPC hardware OAM cap).
     cmap = {
+        (255, 255, 255): 1,
         (0, 255, 170): 1,
         (0, 204, 153): 1,
         (0, 0, 0): 2,
     }
     w, h = im_ce.size
-    pixels = {}
+    line1: dict[tuple[int, int], int] = {}
+    line2: dict[tuple[int, int], int] = {}
     for py in range(h):
+        target = line1 if py < 18 else line2
         for px in range(w):
             rgb = im_ce.getpixel((px, py))
             if rgb in cmap:
-                pixels[(px - w // 2, py - h // 2)] = cmap[rgb]
+                target[(px - w // 2, py - h // 2)] = cmap[rgb]
 
-    ce_moff = alloc.add_metasprite(pack_layer_columns(pixels))
+    tiles = pack_layer_columns(line1) + pack_layer_columns(line2)
+    assert len(tiles) <= 38, f"Chaos Emerald OAM banner has {len(tiles)} tiles (must stay <= 38 so Tails Win pose never overflows 64-sprite OAM cap!)"
+    ce_moff = alloc.add_metasprite(tiles)
+    # 1. Half-pipe OAM banner (0x1D4565)
     assert data[0x1D4563:0x1D4567] == b"\x01\x00\xec\x31"
     struct.pack_into("<H", data, 0x1D4565, ce_moff)
+
+    # 2. Results Tally Screen BG banner: uncompressed tileset at 0x050464 (91 tiles) + 13x3 tilemap at 0x056D52.
+    # Replace cols 0..5 ('SONIC') with 'TAILS' using existing Row 0 outline tiles and exclusive Row 1/2 tiles
+    # (tid 0x0B is shared with 'CHAOS EMERALD!' 0x8E0B and matches 'L' stem + 'S' left edge unmodified!).
+    row0_orig = b"\x00\x0e\x01\x0e\x02\x0e\x03\x0e\x01\x0e\x01\x0e"
+    assert data[0x056D52:0x056D5E] == row0_orig
+    data[0x056D52:0x056D5E] = struct.pack("<6H", 0x8E06, 0x8E05, 0x8E01, 0x8E01, 0x0E01, 0x0E01)
+
+    # 48x16 pixel grid for 'TAILS' (cols 0..5, rows 1..2; '.'=0 bg, '1'=white, '2'=mint/teal, '3'=black)
+    tails_rows = [
+        # Row 1 (y=0..7): pal 0x0E (1=white, 2=mint, 3=black)
+        "......311111113...31113...31113..31113..3111113.",
+        "......311111113...31113...31113..31113.311111113",
+        "......333111333..3111113..31113..31113.311131113",
+        "........31113....3111113..31113..31113.311131113",
+        "........32223...322232223.32223..32223.322233333",
+        "........32223...322232223.32223..32223.3222333.3",
+        "........32223...322232223.32223..32223.322222233",
+        "........32223...322232223.32223..32223.332222223",
+        # Row 2 (y=8..15): pal 0x10 (2=teal, 3=black)
+        "........32223...322222223.32223..32223...3332223",
+        "........32223...322222223.32223..32223..33332223",
+        "........32223...322232223.32223..32223..32223223",
+        "........32223...322232223.32223..322233332223223",
+        "........32223...322232223.32223..322222332223223",
+        "........32223...322232223.32223..322222332222223",
+        "........32223...322232223.32223..3222223.3222223",
+        "........33333...333333333.33333..3333333..33333.",
+    ]
+    ch_map = {".": 0, "1": 1, "2": 2, "3": 3}
+    tbase = 0x050464
+    row1_tids = (0x07, 0x08, 0x09, 0x0A, None, 0x0C)  # Skip 0x0B (shared with CHAOS EMERALD!)
+    row2_tids = (0x13, 0x14, 0x15, 0x16, 0x17, 0x18)
+    for col, tid in enumerate(row1_tids):
+        if tid is not None:
+            tb = encode_2bpp_tile(lambda x, y, c=col: ch_map[tails_rows[y][c * 8 + x]])
+            data[tbase + tid * 16 : tbase + (tid + 1) * 16] = tb
+    for col, tid in enumerate(row2_tids):
+        tb = encode_2bpp_tile(lambda x, y, c=col: ch_map[tails_rows[8 + y][c * 8 + x]])
+        data[tbase + tid * 16 : tbase + (tid + 1) * 16] = tb
 
 
 def patch_title_card_silhouettes(
@@ -636,7 +685,7 @@ def patch_special_stage_standing(
     frame_ptrs: list[tuple[int, int]] = []
     for idx in range(5, 9):
         ox = pad + idx * (cell_w + pad) + cell_w // 2
-        oy = pad + 24
+        oy = pad + 21  # shifted up so restored full shoes sit cleanly on shadow
         x_start = pad + idx * (cell_w + pad)
         bp: dict[tuple[int, int], int] = {}
         op: dict[tuple[int, int], int] = {}
@@ -672,6 +721,101 @@ def patch_special_stage_standing(
     ):
         struct.pack_into("<H", data, off + 2, om)
         struct.pack_into("<H", data, off + 6, bm)
+
+
+def patch_special_stage_running(
+    data: bytearray, sheet_path: Path, alloc: TileAndMetaAllocator
+) -> None:
+    """Import 5 upright Tails Special Stage running frames from ss_tails_running_1x.png (0°, auto 45° CW, lossless 90° CW)."""
+    im = Image.open(sheet_path).convert("RGB")
+    base_pal = {
+        (255, 255, 255): 1,
+        (240, 240, 240): 1,
+        (255, 136, 0): 2,
+        (240, 128, 0): 2,
+        (0, 0, 0): 3,
+    }
+    over_pal = {
+        (255, 68, 0): 1,
+        (240, 64, 0): 1,
+        (85, 204, 255): 2,
+        (80, 192, 240): 2,
+        (0, 0, 255): 3,
+        (0, 0, 240): 3,
+    }
+    bg_colors = {(71, 124, 83), (122, 182, 135)}
+    bg_key = (122, 182, 135)
+    cw, ch, pad, y_top = 36, 36, 2, 10
+
+    stock_steps = [
+        (0x08A8, 0x093C, 0x0646, 0x0770, 0x07C4, 0x094E),
+        (0x08C2, 0x05F2, 0x06BA, 0x077E, 0x07EA, 0x0960),
+        (0x08D8, 0x0600, 0x06E4, 0x078C, 0x0810, 0x096E),
+        (0x08F2, 0x060E, 0x070A, 0x079A, 0x0836, 0x097C),
+        (0x090C, 0x0620, 0x0728, 0x07A8, 0x085C, 0x098E),
+    ]
+
+    def grid_to_layers(img_cell: Image.Image) -> tuple[int, int]:
+        bp: dict[tuple[int, int], int] = {}
+        op: dict[tuple[int, int], int] = {}
+        cx, cy = img_cell.width // 2, img_cell.height // 2
+        for py in range(img_cell.height):
+            for px in range(img_cell.width):
+                rgb = img_cell.getpixel((px, py))
+                if rgb in bg_colors:
+                    continue
+                rx, ry = px - cx, py - cy
+                if rgb in base_pal:
+                    bp[(rx, ry)] = base_pal[rgb]
+                elif rgb in over_pal:
+                    ov = over_pal[rgb]
+                    op[(rx, ry)] = ov
+                    bp[(rx, ry)] = 3 if ov == 1 else 1
+                else:
+                    raise ValueError(f"Unmapped pixel in {sheet_path} ({px},{py}): {rgb}")
+        b_tiles = pack_layer_columns(bp)
+        o_tiles = pack_layer_columns(op)
+        assert len(b_tiles) + len(o_tiles) <= 22, f"Special Stage frame uses {len(b_tiles)+len(o_tiles)} tiles!"
+        return alloc.add_metasprite(b_tiles), alloc.add_metasprite(o_tiles)
+
+    meta_remap: dict[int, int] = {}
+    for idx, (s_b0, s_o0, s_b45, s_o45, s_b90, s_o90) in enumerate(stock_steps):
+        x0 = pad + idx * (cw + pad)
+        cell0 = im.crop((x0, y_top, x0 + cw, y_top + ch))
+        cell45 = cell0.rotate(-45, resample=Image.NEAREST, fillcolor=bg_key)
+        cell90 = cell0.transpose(Image.Transpose.ROTATE_270)
+        meta_remap[s_b0], meta_remap[s_o0] = grid_to_layers(cell0)
+        meta_remap[s_b45], meta_remap[s_o45] = grid_to_layers(cell45)
+        meta_remap[s_b90], meta_remap[s_o90] = grid_to_layers(cell90)
+
+    # Remap all 0x0E <flag> <moff> pointers across Running (0x1CA997..0x1CAB02) and Hurt/Tumble (0x1CAB1B..0x1CAB63)
+    remapped = 0
+    for start, end in ((0x1CA997, 0x1CAB03), (0x1CAB1B, 0x1CAB64)):
+        off = start
+        while off < end:
+            op = data[off]
+            if op == 0x0E:
+                old_m = struct.unpack_from("<H", data, off + 2)[0]
+                if old_m in meta_remap:
+                    struct.pack_into("<H", data, off + 2, meta_remap[old_m])
+                    remapped += 1
+                off += 4
+            elif op == 0x08:
+                off += 3
+            elif op == 0x03:
+                off += 2
+            elif op == 0x02:
+                off += 4
+            else:
+                off += 1
+    assert remapped == 94, f"Expected 94 Special Stage running/hurt metasprite remaps, got {remapped}"
+
+    # Clear the blue center-diamond Overlay metasprites (0x06AA, 0x06B0) in the 2-frame Spin Ball script (0x1CAB03)
+    empty_moff = alloc.add_metasprite([])
+    assert data[0x1CAB03:0x1CAB07] == b"\x0e\x01\xaa\x06"
+    assert data[0x1CAB0D:0x1CAB11] == b"\x0e\x01\xb0\x06"
+    struct.pack_into("<H", data, 0x1CAB05, empty_moff)
+    struct.pack_into("<H", data, 0x1CAB0F, empty_moff)
 
 
 def patch_title_tails_text(

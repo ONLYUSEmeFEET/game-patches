@@ -42,10 +42,13 @@
 - `0x03BFFC..0x03C005`: **Hook 1** — VBlank Dynamic Tile Streamer (`call 0x3FAD00`; bit 15 routes to `0x3FB000`).
 - `0x03C081..0x03C086`: **Hook 2** — Shadow OAM Metasprite Reader (`call 0x3FAD20`; offsets `>= 0xD000` route to `0x3F0000`).
 - `0x03C748`: Palette table base (6 bytes per entry; entries `0x024A` and `0x0273` patched for Tornado swap).
+- `0x050462` (`tbase = 0x050464`, 91 tiles) & `0x056D52..0x056D5D` (13×3 BG tilemap): Special Stage Results Tally `"TAILS GOT A CHAOS EMERALD!"` BG tileset & Row 0 outline tilemap (exclusive tiles `0x07..0x0A`, `0x0C`, `0x13..0x18` patched; shared `0x0B` preserved for `CHAOS EMERALD!`).
 - `0x19AAFD..0x19AB08`: **Hook 3** — Player 1 Airborne Loop (`call 0x3FAC00` -> `flight_hook_body`).
 - `0x19C7EC..0x19C7EF`: **Hook 4** — Extra Tails draw call (`call 0x3FAD60`; hides separate tail overlay during flight).
 - `0x19DC21..0x19DC2A`: HUD / 1UP Monitor palette branch fix for Single Player Tails.
-- `0x1CA5DD..0x1CA5E4`, `0x1CA6AC..0x1CA6B3`: **Hook 7a/7b** — Special Stage Intro/Win Pose Tails Palette (`call 0x3FAE80` / `ss_tails_pal_hook`).
+- `0x1CA3B0..0x1CA3BF`, `0x1CA7C6..0x1CA7CD`: **Hook 7c/7d** — Special Stage Gameplay Init & Base Reload Tails Palette (`call ss_gameplay_pal_hook` / `ss_base_pal_hook`).
+- `0x1CA5DD..0x1CA5E4`, `0x1CA6AC..0x1CA6B3`: **Hook 7a/7b** — Special Stage Intro/Win Pose Tails Palette (`call ss_tails_pal_hook`).
+- `0x1CA997..0x1CAB63`: Special Stage behind-view running (`5 steps × 3 angles: 0°, 45° CW, 90° CW`) & hurt/tumble metasprite pointers (94 remaps streamed via `0xD000+`).
 - `0x1CAB65..0x1CAB96`: Special Stage standing/pose animation script pointers (4 Tails frames streamed via `0xD000+`).
 - `0x1CE458..0x1CE467`: **Hook 6** — Goalpost Signpost Palette (`call 0x3FAE60`).
 - `0x1CFAD0..0x1CFADF`: Title Card silhouette animation script pointers (3 Tails silhouette frames streamed via `0xD000+`).

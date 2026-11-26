@@ -1,5 +1,5 @@
 ================================================================================
-Tails Pocket Adventure (v3.3)
+Tails Pocket Adventure (v3.4)
 ROM Hack for Sonic The Hedgehog - Pocket Adventure (Neo Geo Pocket Color)
 ================================================================================
 
@@ -8,10 +8,11 @@ Overview
 Play through Single Player mode as Miles "Tails" Prower, complete with his
 signature flight ability, 5-second flight fatigue mechanics, shimmer-free
 NGPC-style flying & tired sprites, a brand-new Tails title screen with blinking
-animation, Tails HUD / 1UP / Goalpost / Title Card / Special Stage art, and
-Sonic & Tails Tornado role swaps.
+animation, full Special Stage Tails conversion (behind-view running, clean
+orange Spin Ball, Win/Lose poses, Half-Pipe & Results Tally banners), Tails
+HUD / 1UP / Goalpost / Title Card art, and Sonic & Tails Tornado role swaps.
 
-Features (v3.3)
+Features (v3.4)
 ---------------
 1. Playable Tails in Single Player, Flight & Fatigue Mechanics
    - Single Player starts with Tails instead of Sonic.
@@ -50,9 +51,17 @@ Features (v3.3)
    - End-of-Act Goalpost / Signpost updated with custom Tails signpost art and
      Tails palette.
    - Level Title Card silhouette updated with 3 custom Tails silhouette frames.
-   - Special Stage Intro / Win Pose updated with 4 custom Tails standing/pose
-     frames, Tails palette hooks, and "TAILS GOT A CHAOS EMERALD!" text.
-     (Note: Special Stage running sprites remain stock blue Sonic for now.)
+   - Special Stage Full Tails Conversion:
+     * 5 custom behind-view Tails running sprites (inspired by Sonic Triple
+       Trouble, with fox ears, smooth back, and twin swaying orange-and-white
+       tails) across all 8 half-pipe angles + hurt/tumble frames (94 remapped
+       metasprite pointers) with Tails's palette locked throughout gameplay.
+     * Clean orange Spin Ball (Sonic's blue center diamond removed).
+     * 4 custom Tails Intro / Win / Lose poses with restored red+white shoes.
+     * Compact 35-sprite Half-Pipe "TAILS GOT A CHAOS EMERALD!" OAM banner
+       (staying safely under NGPC's 64-sprite OAM cap so Tails stays visible
+       when winning) AND native two-tone BG "TAILS GOT A CHAOS EMERALD!" text
+       on the Results Tally screen.
 
 Controls
 --------
@@ -64,7 +73,7 @@ Controls
 
 Patching Instructions
 ---------------------
-Apply `Tails Pocket Adventure v3.3.bps` using Floating IPS (Flips),
+Apply `Tails Pocket Adventure v3.4.bps` using Floating IPS (Flips),
 RomPatcher.js, or any BPS-compatible patcher to an unmodified clean copy of:
 
   Sonic The Hedgehog - Pocket Adventure (World).ngc
@@ -78,16 +87,32 @@ Source ROM: Sonic The Hedgehog - Pocket Adventure (World).ngc (2,097,152 bytes)
   MD5   : B8A899AE2B0F1DFA0DB5417DE745A51E
   SHA-1 : 3FE15D4374C4CA073AA0393FCFCAD0055BD345AB
 
-Patched ROM: Tails Pocket Adventure v3.3.ngc (2,097,152 bytes)
-  CRC32 : DCE92D3E
-  MD5   : 6D067D546D1572DAAFAD54C0AFD2C3A4
-  SHA-1 : EA7ECDAC6A843C2787385D0B70A07F03E5A3A296
+Patched ROM: Tails Pocket Adventure v3.4.ngc (2,097,152 bytes)
+  CRC32 : 1480DCC5
+  MD5   : F4A3E0F9A0018355A8A4D47288D74A39
+  SHA-1 : FC0FEE953906D1416502377E159D556BF3E83A99
 
 Patch File:
-  Tails Pocket Adventure v3.3.bps (15,825 bytes, Patch CRC32: 2144DF1C)
+  Tails Pocket Adventure v3.4.bps (19,992 bytes, Patch CRC32: 2144DF1C)
 
 Changelog
 ---------
+v3.4
+- Full Special Stage Tails conversion: added 5 custom behind-view Tails running
+  sprites (fox ears, smooth back, swaying twin tails) across all 8 half-pipe
+  angles & hurt frames (94 remapped metasprite pointers) plus gameplay palette
+  hooks (0x1CA3B0, 0x1CA7C6).
+- Removed Sonic's blue center diamond from Tails's Special Stage Spin Ball.
+- Restored full red+white shoes and cleaned stray outline pixels on Tails's
+  Special Stage Win and Lose poses.
+- Rebuilt Half-Pipe "TAILS GOT A CHAOS EMERALD!" OAM banner into a crisp,
+  opaque 35-sprite font (preventing 64-sprite OAM overflow so Tails no longer
+  vanishes while winning).
+- Patched the Special Stage Results Tally Scroll Plane BG tileset (0x050464)
+  and tilemap (0x056D52) so the Results screen displays "TAILS GOT A CHAOS
+  EMERALD!" in the authentic White/Mint/Teal gradient.
+- Archived v3.3.bps into `archived/` for a clean download.
+
 v3.3
 - Added 5.0-second (300-frame) flight fatigue system with dedicated WRAM lock
   flag (cannot re-fly mid-air until landing, hitting a spring, or taking damage).
