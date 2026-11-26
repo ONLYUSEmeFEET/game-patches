@@ -16,7 +16,11 @@ sys.path.insert(0, str(PROJECT_DIR / "src"))
 
 from assets import (
     TileAndMetaAllocator,
+    pack_chaos_gg_flying_frames,
+    pack_compact_flying_frames,
     pack_flying_frames,
+    pack_ngpc_native_flying_frames,
+    pack_ngpc_style_flying_frames,
     patch_chaos_emerald_text,
     patch_goalpost_from_sheet,
     patch_hud_tails_head,
@@ -37,7 +41,7 @@ from patchkit import (
 )
 
 # Single source of truth for release version & clean base ROM
-VERSION = "3.2"
+VERSION = "3.3"
 EXPECTED_SRC_CRC32 = "356F0849"
 EXPECTED_SRC_SIZE = 2_097_152
 
@@ -65,7 +69,7 @@ def main() -> int:
     parser.add_argument(
         "--sheet",
         type=Path,
-        default=DEFAULT_SHEETS_DIR / "tails_flying_advance_sheet.png",
+        default=DEFAULT_SHEETS_DIR / "tails_flying_ngpc_style_1x.png",
         help="Tails flying sprite sheet path",
     )
     parser.add_argument("--asw", type=str, default=DEFAULT_ASW, help="Path to asw.exe")
@@ -86,9 +90,9 @@ def main() -> int:
         label="Enable Playable Tails in Single Player",
     )
 
-    # 2. Pack Custom Flying Sprites, Goalpost Signpost, Chaos Emerald Text, and Title Screen Portrait/Blink
+    # 2. Pack Custom Flying Sprites (4 Active + 2 Tired NGPC-style), Goalpost, Chaos Emerald, Title Screen
     alloc = TileAndMetaAllocator()
-    custom_frame_ptrs = pack_flying_frames(args.sheet, alloc)
+    custom_frame_ptrs = pack_ngpc_style_flying_frames(args.sheet, alloc)
     patch_goalpost_from_sheet(data, DEFAULT_SHEETS_DIR / "goalpost_signpost_1x.png", alloc)
     patch_chaos_emerald_text(data, DEFAULT_SHEETS_DIR / "tails_chaos_emerald_1x.png", alloc)
     patch_title_card_silhouettes(data, DEFAULT_SHEETS_DIR / "title_card_silhouette_1x.png", alloc)

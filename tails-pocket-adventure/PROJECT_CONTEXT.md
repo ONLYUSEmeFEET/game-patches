@@ -57,11 +57,14 @@
 - `0x004D41`: Controller newly-pressed / input bitmask (`0x30` = A/B jump buttons, bit `6` = Option).
 - `0x00506E`: Camera Y coordinate (screen top reference: `screen_Y_from_top = (00506Eh) + 0097h - (xiz+16h)`).
 - `0x0067B1`: Active character ID (`0x04` = Tails).
+- `0x006980`: Custom flight SFX cadence countdown timer (1 byte, in verified-free WRAM gap `0x697E..0x69BE`).
+- `0x006982`: Custom 16-bit flight fatigue countdown timer (2 bytes, initialized to `0x012C` = 300 frames / 5.0s).
+- `0x006984`: Custom flight fatigue lock flag (`0x01` once stamina expires; cleared only by `hide_tails_hook` when `(xiz+00h) != 0xAAF7`, i.e., upon landing/spring/hurt/stage reset).
 - `xiz + 0x16`: Player Y position (word).
-- `xiz + 0x1C`: Player Y velocity (signed word; positive = rising, `0xFD00` = fall cap).
-- `xiz + 0x20`: Player animation/action ID (`0x3F` = Tails flying state).
-- `xiz + 0x3C`: Custom flight SFX countdown timer (reloaded to `0x0C` ticks).
-- `xiz + 0x49`: Player sub-state / damage flag (`0x00` = normal run/roll/jump/fall/spring, `0x02` = flying/attack active, `>= 0x04` = hurt `04` / dead `05` / Giant Ring & Goal warp).
+- `xiz + 0x1C`: Player Y velocity (signed word; positive = rising, `0xFD00` = active fall cap, `0xFC00` = tired fall cap).
+- `xiz + 0x20`: Active animation script bank byte (`0x3F` = custom Tails flying / tired scripts in `0x3FAC00..0x3FAFFF`).
+- `xiz + 0x40`: Engine control-lock word (guarded before reading jump input in `flight_hook`).
+- `xiz + 0x49`: Player sub-state / damage flag (`0x00` = normal / tired vulnerable, `0x02` = active flight attack hitbox, `>= 0x04` = hurt `04` / dead `05` / Giant Ring & Goal warp).
 
 ## 6. Key Engine Routines (CPU Addresses)
 - `0x237815`: Title → Debug/Level Select transition helper.

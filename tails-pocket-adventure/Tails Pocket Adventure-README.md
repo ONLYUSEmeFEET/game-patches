@@ -1,27 +1,34 @@
 ================================================================================
-Tails Pocket Adventure (v3.2)
+Tails Pocket Adventure (v3.3)
 ROM Hack for Sonic The Hedgehog - Pocket Adventure (Neo Geo Pocket Color)
 ================================================================================
 
 Overview
 --------
 Play through Single Player mode as Miles "Tails" Prower, complete with his
-signature flight ability, custom Sonic Advance-style flying sprites, a brand-new
-Tails title screen with blinking animation, Tails HUD / 1UP / Goalpost / Title
-Card / Special Stage art, and Sonic & Tails Tornado role swaps.
+signature flight ability, 5-second flight fatigue mechanics, shimmer-free
+NGPC-style flying & tired sprites, a brand-new Tails title screen with blinking
+animation, Tails HUD / 1UP / Goalpost / Title Card / Special Stage art, and
+Sonic & Tails Tornado role swaps.
 
-Features (v3.2)
+Features (v3.3)
 ---------------
-1. Playable Tails in Single Player & Flight Mechanics
+1. Playable Tails in Single Player, Flight & Fatigue Mechanics
    - Single Player starts with Tails instead of Sonic.
    - Tails can fly by pressing A (Jump) again at any point while airborne
      (including while moving left/right or quick-tapping mid-jump).
+   - Balanced 5.0-second (300-frame) flight fatigue system: once stamina runs
+     out, Tails switches to a closed-eye tired descent with a slower propeller
+     sputter SFX, loses his flight attack hitbox (vulnerable), ignores A lift
+     presses, and retains horizontal steering until landing, hitting a spring,
+     grabbing a bar, or taking damage.
    - Balanced flight physics (3x ascent height, gravity & fall speed cap),
      visible-screen top ceiling collision (works in normal stages & boss
-     arenas), and upward/downward flight damage against enemies.
-   - Custom 1:1 Sonic Advance flying sprite set (frames 0x85..0x90, preserving
-     frame 0x84 for looking up) with 2x3 blue eyes & white sclera, plus
-     lowered-volume helicopter tail SFX.
+     arenas), and upward/downward flight damage against enemies while active.
+   - Custom shimmer-free NGPC-style flying & tired sprite set (4 active frames
+     0x85..0x88 + 2 tired closed-eye frames 0x89..0x8A, preserving frame 0x84
+     for looking up) with crisp 3-stack SkyBlue/Black/DarkBlue eyes, plus
+     cleanly timed helicopter tail SFX with engine control-lock guards.
    - Extra separate tail overlay sprite is hidden cleanly during flight.
 
 2. Brand-New Tails Title Screen
@@ -51,16 +58,18 @@ Controls
 --------
 - D-Pad          : Move / Crouch / Look
 - A              : Jump / Spin Dash; press A again mid-jump or mid-roll to Fly
-                   (tap/hold A while flying to ascend)
+                   (tap/hold A while flying to ascend for up to 5.0 seconds)
 - B              : Secondary action / Cancel
 - Option         : Pause (in-game) / Open Debug & Level Select (Title Screen)
 
 Patching Instructions
 ---------------------
-Apply `Tails Pocket Adventure v3.2.bps` using Floating IPS (Flips),
+Apply `Tails Pocket Adventure v3.3.bps` using Floating IPS (Flips),
 RomPatcher.js, or any BPS-compatible patcher to an unmodified clean copy of:
 
   Sonic The Hedgehog - Pocket Adventure (World).ngc
+
+(Older patches have been moved into the `archived/` folder.)
 
 Checksums (Verified)
 --------------------
@@ -69,16 +78,27 @@ Source ROM: Sonic The Hedgehog - Pocket Adventure (World).ngc (2,097,152 bytes)
   MD5   : B8A899AE2B0F1DFA0DB5417DE745A51E
   SHA-1 : 3FE15D4374C4CA073AA0393FCFCAD0055BD345AB
 
-Patched ROM: Tails Pocket Adventure v3.2.ngc (2,097,152 bytes)
-  CRC32 : 9F8B45A4
-  MD5   : F1F26011C57C630E49B27246A23FEDE9
-  SHA-1 : B4C70D5BD9C1D45C1D0A53E4001E3AA0CC27FF0D
+Patched ROM: Tails Pocket Adventure v3.3.ngc (2,097,152 bytes)
+  CRC32 : DCE92D3E
+  MD5   : 6D067D546D1572DAAFAD54C0AFD2C3A4
+  SHA-1 : EA7ECDAC6A843C2787385D0B70A07F03E5A3A296
 
 Patch File:
-  Tails Pocket Adventure v3.2.bps (17,341 bytes, Patch CRC32: 2144DF1C)
+  Tails Pocket Adventure v3.3.bps (15,825 bytes, Patch CRC32: 2144DF1C)
 
 Changelog
 ---------
+v3.3
+- Added 5.0-second (300-frame) flight fatigue system with dedicated WRAM lock
+  flag (cannot re-fly mid-air until landing, hitting a spring, or taking damage).
+- Upgraded Tails's flying sprites to a shimmer-free, NGPC-style 4-frame active
+  + 2-frame closed-eye tired sprite set with crisp 3-stack SkyBlue/Black/DarkBlue
+  eyes (reducing custom tile footprint from 302 to 233 tiles).
+- Fixed flying SFX RAM collision (moved out of colliding xiz+0x3C into verified-
+  free WRAM 0x006980..0x006984), added engine control-lock guard (xiz+0x40),
+  and tuned active (20-frame) and tired sputter (36-frame) SFX cadence.
+- Archived older patches (v3.1, v3.2) into `archived/` for a clean download.
+
 v3.2
 - Added custom Tails Title Screen portrait inside the unbroken gold star ring
   with eye-blinking OAM animation and deep Tails-orange logo badge.
@@ -95,6 +115,6 @@ Credits
 -------
 - Author & Custom Art  : AJ Ryan (@ONLYUSEmeFEET)
 - Original Game        : SNK / Dimps / Sega (Sonic The Hedgehog - Pocket Adventure)
-- Flying Sprite Source : Sonic Advance (GBA) Tails flying sprite sheet
+- Flying Sprite Ref    : Sonic Advance (GBA) adapted to NGPC flat-color style
 - Assembly & Tooling   : TLCS-900/H (Macro Assembler AS) & Python BPS patchkit
                          built with Antigravity AI

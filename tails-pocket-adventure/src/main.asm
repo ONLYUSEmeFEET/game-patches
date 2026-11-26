@@ -6,14 +6,21 @@
     ; Hook sites in build_patch.py resolve label addresses automatically via ASW's .map output.
     org CAVE_ASM_BASE
 
-; --- Custom Mid-Air Flight Hook for Tails (called from ROM 0x19AAFD) ---
+; --- Custom Mid-Air Flight & 6.0s Fatigue Hook for Tails (called from ROM 0x19AAFD) ---
 flight_hook:
     cp (RAM_CHAR_ID), CHAR_TAILS
     jp ne, normal_grav
     ; Do not run flight physics/animation if hurt (04), dead (05), or Giant Ring/Goal warp (>=04)
-    ; Note: (xiz+P_SUBSTATE) is 00h during normal running/rolling/jumping/falling/springing!
     cp (xiz+P_SUBSTATE), STATE_HURT_OR_WARP
     jp uge, normal_grav
+
+    ; Respect engine control-lock timer (springs, boosters, cutscenes) before reading jump input
+    cpw (xiz+P_CTRL_LOCK), 0000h
+    jr ne, check_flying
+
+    ; If fatigued (RAM_FLY_LOCKED != 0), ignore A presses completely until Tails leaves airborne state
+    cp (RAM_FLY_LOCKED), 00h
+    jr ne, check_flying
 
     ld a, (RAM_INPUT_PRESSED)
     and a, 30h
@@ -21,6 +28,7 @@ flight_hook:
 
     cp (xiz+P_ANIM_ID), ANIM_TAILS_FLY
     jr eq, boost_vel
+
 start_fly:
     push xix
     push xiy
@@ -28,7 +36,8 @@ start_fly:
     call FN_START_ANIM
     pop xiy
     pop xix
-    ld (xiz+P_FLY_SFX_TIMER), FLY_SFX_INTERVAL
+    ldw (RAM_FLY_FATIGUE), FLY_MAX_FRAMES
+    ld (RAM_FLY_SFX_TIMER), FLY_SFX_INTERVAL
     call play_fly_sfx
 
 boost_vel:
@@ -37,11 +46,34 @@ boost_vel:
 
 check_flying:
     cp (xiz+P_ANIM_ID), ANIM_TAILS_FLY
-    jr ne, normal_grav
+    jp ne, normal_grav
 
-    dec 1, (xiz+P_FLY_SFX_TIMER)
+    ; Check whether Tails is already fatigued (RAM_FLY_LOCKED != 0)
+    cp (RAM_FLY_LOCKED), 00h
+    jr ne, tired_flying
+
+    ; Active flight: decrement 16-bit fatigue countdown (sub updates Z flag reliably on TLCS-900/H)
+    ld wa, (RAM_FLY_FATIGUE)
+    sub wa, 0001h
+    ld (RAM_FLY_FATIGUE), wa
+    jr nz, active_fly_sfx
+
+    ; Stamina just expired -> lock flight until landing/spring/hurt, disable attack hitbox, switch to tired anim
+    ld (RAM_FLY_LOCKED), 01h
+    ld (xiz+P_SUBSTATE), STATE_NORMAL
+    push xix
+    push xiy
+    ld xix, fly_tired_script
+    call FN_START_ANIM
+    pop xiy
+    pop xix
+    ld (RAM_FLY_SFX_TIMER), FLY_TIRED_SFX_INT
+    jr tired_cap_vel
+
+active_fly_sfx:
+    dec 1, (RAM_FLY_SFX_TIMER)
     jr nz, fly_cap_vel
-    ld (xiz+P_FLY_SFX_TIMER), FLY_SFX_INTERVAL
+    ld (RAM_FLY_SFX_TIMER), FLY_SFX_INTERVAL
     call play_fly_sfx
 
 fly_cap_vel:
@@ -53,7 +85,6 @@ fly_grav:
     ; Top Ceiling Collision using visible camera screen top:
     ; screen_Y_from_top = (RAM_CAMERA_Y) + 0097h - (xiz+P_Y_POS)
     ; Clamp when rising ((xiz+P_Y_VEL) > 0) and (xiz+P_Y_POS) >= (RAM_CAMERA_Y) + 0087h (16px from screen top)
-    ; Works on both normal stages and camera-locked boss arenas!
     cpw (xiz+P_Y_VEL), 0000h
     jr le, fly_grav_val
     ld bc, (RAM_CAMERA_Y)
@@ -65,6 +96,22 @@ fly_grav:
 
 fly_grav_val:
     ld wa, FLY_GRAVITY
+    ret
+
+tired_flying:
+    ld (xiz+P_SUBSTATE), STATE_NORMAL
+    dec 1, (RAM_FLY_SFX_TIMER)
+    jr nz, tired_cap_vel
+    ld (RAM_FLY_SFX_TIMER), FLY_TIRED_SFX_INT
+    call play_fly_sfx
+
+tired_cap_vel:
+    cpw (xiz+P_Y_VEL), FLY_TIRED_FALL_CAP
+    jr ge, tired_grav_val
+    ldw (xiz+P_Y_VEL), FLY_TIRED_FALL_CAP
+
+tired_grav_val:
+    ld wa, FLY_TIRED_GRAVITY
     ret
 
 normal_grav:
@@ -112,8 +159,12 @@ ending_tails_pal:
     call FN_LOAD_PALETTE
     ret
 
-; --- Hide Extra Tails During Flight (called from ROM 0x19C7EC) ---
+; --- Hide Extra Tails During Flight & Clear Fatigue Lock Outside Airborne State (called from ROM 0x19C7EC) ---
 hide_tails_hook:
+    cpw (xiz+P_STATE_FN), STATE_AIRBORNE_LO
+    jr eq, check_hide_tail
+    ld (RAM_FLY_LOCKED), 00h
+check_hide_tail:
     cp (xiz+P_ANIM_ID), ANIM_TAILS_FLY
     jr eq, skip_extra_tails
     jp FN_DRAW_EXTRA_TAILS
@@ -174,27 +225,16 @@ orig_ss_pal:
     db 0d8h, 0afh, 23h, 01h, 1dh, 0b3h, 0e3h, 23h
     ret
 
-; --- 2-Loop 16-Step Tails Flying Animation Script ---
+; --- 4-Frame Shimmer-Free NGPC-Style Tails Flying Animation Script (0x85..0x88) ---
 fly_script:
-    ; Loop 1 (open eyes: 0, 1, 2, 3, 8, 9, 10, 7 -> 0x85..0x88, 0x8D..0x8F, 0x8C)
     db 0ch, 00h, 85h, 00h,  03h, 02h
     db 0ch, 00h, 86h, 00h,  03h, 02h
     db 0ch, 00h, 87h, 00h,  03h, 02h
     db 0ch, 00h, 88h, 00h,  03h, 02h
-    db 0ch, 00h, 8dh, 00h,  03h, 02h
-    db 0ch, 00h, 8eh, 00h,  03h, 02h
-    db 0ch, 00h, 8fh, 00h,  03h, 02h
-    db 0ch, 00h, 8ch, 00h,  03h, 02h
-
-    ; Loop 2 (blinking loop: 0, 1, 2, 3, 4, 5, 6, 7 -> 0x85..0x8C)
-    db 0ch, 00h, 85h, 00h,  03h, 02h
-    db 0ch, 00h, 86h, 00h,  03h, 02h
-    db 0ch, 00h, 87h, 00h,  03h, 02h
-    db 0ch, 00h, 88h, 00h,  03h, 02h
-    db 0ch, 00h, 89h, 00h,  03h, 02h
-    db 0ch, 00h, 8ah, 00h,  03h, 02h
-    db 0ch, 00h, 8bh, 00h,  03h, 02h
-    db 0ch, 00h, 8ch, 00h,  03h, 02h
-
-    ; Loop back to fly_script (24-bit little-endian CPU address)
     db 02h, fly_script & 0ffh, (fly_script >> 8) & 0ffh, (fly_script >> 16) & 0ffh
+
+; --- 2-Frame NGPC-Style Tired Flying Animation Script (closed eyes, slower spin: 0x89..0x8A) ---
+fly_tired_script:
+    db 0ch, 00h, 89h, 00h,  03h, 06h
+    db 0ch, 00h, 8ah, 00h,  03h, 06h
+    db 02h, fly_tired_script & 0ffh, (fly_tired_script >> 8) & 0ffh, (fly_tired_script >> 16) & 0ffh

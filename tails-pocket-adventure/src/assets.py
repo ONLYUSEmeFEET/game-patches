@@ -264,6 +264,230 @@ def pack_flying_frames(sheet_path: Path, alloc: TileAndMetaAllocator) -> list[tu
     return frame_ptrs
 
 
+def pack_ngpc_style_flying_frames(
+    sheet_path: Path, alloc: TileAndMetaAllocator
+) -> list[tuple[int, int]]:
+    """Import 4 active + 2 tired NGPC-style flying frames (cells 1..6) from tails_flying_ngpc_style_1x.png."""
+    im = Image.open(sheet_path).convert("RGB")
+    base_pal = {
+        (255, 255, 255): 1,
+        (240, 240, 240): 1,
+        (255, 136, 0): 2,
+        (240, 128, 0): 2,
+        (0, 0, 0): 3,
+    }
+    over_pal = {
+        (255, 68, 0): 1,
+        (240, 64, 0): 1,
+        (85, 204, 255): 2,
+        (80, 192, 240): 2,
+        (0, 0, 255): 3,
+        (0, 0, 240): 3,
+    }
+    cw, ch, pad, y_top = 44, 42, 2, 10
+    ox, oy = 22, 25
+    bg = {(71, 124, 83), (122, 182, 135)}
+
+    frame_ptrs: list[tuple[int, int]] = []
+    # Cell 0 is Stock NGPC Tails Standing scale ruler; Cells 1..4 = Active (0x85..0x88), Cells 5..6 = Tired (0x89..0x8A)
+    for idx in range(1, 7):
+        x0 = pad + idx * (cw + pad)
+        bp: dict[tuple[int, int], int] = {}
+        op: dict[tuple[int, int], int] = {}
+        for py in range(ch):
+            for px in range(cw):
+                rgb = im.getpixel((x0 + px, y_top + py))
+                if rgb in bg:
+                    continue
+                rx, ry = px - ox, py - oy
+                if rgb in base_pal:
+                    bp[(rx, ry)] = base_pal[rgb]
+                elif rgb in over_pal:
+                    ov = over_pal[rgb]
+                    op[(rx, ry)] = ov
+                    bp[(rx, ry)] = 3 if ov == 1 else 1
+                else:
+                    raise ValueError(f"Unmapped pixel in {sheet_path} cell {idx} ({px},{py}): {rgb}")
+        frame_ptrs.append((alloc.add_metasprite(pack_layer_columns(bp)), alloc.add_metasprite(pack_layer_columns(op))))
+    return frame_ptrs
+
+
+def pack_ngpc_native_flying_frames(
+    sheet_path: Path, alloc: TileAndMetaAllocator
+) -> list[tuple[int, int]]:
+    """Import 6 native 1x NGPC Tails flying frames (3 active + 3 tired) from tails_flying_ngpc_native_1x.png."""
+    im = Image.open(sheet_path).convert("RGB")
+    base_pal = {
+        (255, 255, 255): 1,
+        (240, 240, 240): 1,
+        (255, 136, 0): 2,
+        (240, 128, 0): 2,
+        (0, 0, 0): 3,
+    }
+    over_pal = {
+        (255, 68, 0): 1,
+        (240, 64, 0): 1,
+        (85, 204, 255): 2,
+        (80, 192, 240): 2,
+        (0, 0, 255): 3,
+        (0, 0, 240): 3,
+    }
+    cw, ch, pad, y_top = 36, 38, 2, 10
+    bg = {(71, 124, 83), (122, 182, 135)}
+
+    frame_ptrs: list[tuple[int, int]] = []
+    for idx in range(6):
+        x0 = pad + idx * (cw + pad)
+        bp: dict[tuple[int, int], int] = {}
+        op: dict[tuple[int, int], int] = {}
+        for py in range(ch):
+            for px in range(cw):
+                rgb = im.getpixel((x0 + px, y_top + py))
+                if rgb in bg:
+                    continue
+                rx, ry = px - 18, py - 22  # feet at +14, exact match to stock NGPC Tails!
+                if rgb in base_pal:
+                    bp[(rx, ry)] = base_pal[rgb]
+                elif rgb in over_pal:
+                    ov = over_pal[rgb]
+                    op[(rx, ry)] = ov
+                    bp[(rx, ry)] = 3 if ov == 1 else 1
+                else:
+                    raise ValueError(f"Unmapped pixel in {sheet_path} cell {idx} ({px},{py}): {rgb}")
+        frame_ptrs.append((alloc.add_metasprite(pack_layer_columns(bp)), alloc.add_metasprite(pack_layer_columns(op))))
+    return frame_ptrs
+
+
+def pack_chaos_gg_flying_frames(
+    sheet_path: Path, alloc: TileAndMetaAllocator
+) -> list[tuple[int, int]]:
+    """Convert 3 native 1x Sonic Chaos (Game Gear) flying frames + 3 closed-eye tired frames to NGPC 2-layer OAM."""
+    im = Image.open(sheet_path).convert("RGB")
+    bg_cols = {(0, 72, 0), (182, 72, 182), (255, 182, 255)}
+    cell_x0s = (2, 38, 74)
+
+    def convert_cell(x0: int, tired: bool) -> tuple[dict[tuple[int, int], int], dict[tuple[int, int], int]]:
+        fg: dict[tuple[int, int], tuple[int, int, int]] = {}
+        for y in range(34):
+            for x in range(32):
+                c = im.getpixel((x0 + x, y))
+                if c not in bg_cols:
+                    fg[(x, y)] = c
+
+        bp: dict[tuple[int, int], int] = {}
+        op: dict[tuple[int, int], int] = {}
+        # Anchor: horizontally centered at x=13, bottom of shoes (y=26) at ry=+14 (matches stock NGPC Tails!)
+        ox, oy = 13, 12
+        for (x, y), c in fg.items():
+            rx, ry = x - ox, y - oy
+            is_outer = any((x + dx, y + dy) not in fg for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1)))
+            if c == (255, 72, 0):
+                # Red shoe on Overlay 1 + opaque Black Base 3 underneath
+                op[(rx, ry)] = 1
+                bp[(rx, ry)] = 3
+            elif c == (0, 0, 0):
+                if x <= 21 and 14 <= y <= 16:
+                    # Eye top -> Sky Blue (2) on Overlay + White (1) sclera on Base
+                    op[(rx, ry)] = 2
+                    bp[(rx, ry)] = 1
+                else:
+                    bp[(rx, ry)] = 3  # Nose tip
+            elif c in ((72, 0, 0), (72, 72, 72)):
+                # Bottom half of left eye (x=18, y=16) -> Dark Blue (3) on Overlay + White Base
+                if x == 18 and y == 16:
+                    op[(rx, ry)] = 3
+                    bp[(rx, ry)] = 1
+                else:
+                    bp[(rx, ry)] = 3
+            elif c == (255, 255, 255):
+                bp[(rx, ry)] = 1
+            elif c == (145, 145, 145):
+                if x == 20 and y == 16:
+                    # Bottom half of right eye -> Dark Blue (3) on Overlay + White Base
+                    op[(rx, ry)] = 3
+                    bp[(rx, ry)] = 1
+                elif y <= 7:
+                    bp[(rx, ry)] = 1  # Keep overhead white spinning tail fluffy
+                else:
+                    bp[(rx, ry)] = 3 if is_outer else 1
+            elif c == (255, 145, 72):
+                bp[(rx, ry)] = 2
+            elif c == (145, 72, 0):
+                if y <= 7:
+                    bp[(rx, ry)] = 2  # Keep overhead orange spinning tail bright
+                else:
+                    bp[(rx, ry)] = 3 if is_outer else 2
+
+        if tired:
+            # Close both eyes cleanly (orange eyelids on top + crisp 1px black lash line)
+            for ex in (17, 18, 20):
+                op.pop((ex - ox, 15 - oy), None)
+                op.pop((ex - ox, 16 - oy), None)
+                bp[(ex - ox, 14 - oy)] = 2
+                bp[(ex - ox, 15 - oy)] = 2
+                bp[(ex - ox, 16 - oy)] = 3
+            # Also close upper white sclera on both eyes
+            bp[(17 - ox, 13 - oy)] = 2
+            bp[(18 - ox, 13 - oy)] = 2
+            bp[(20 - ox, 13 - oy)] = 2
+
+        return bp, op
+
+    frame_ptrs: list[tuple[int, int]] = []
+    # 3 active flying frames (0x85..0x87) + 3 tired flying frames (0x88..0x8A)
+    for tired in (False, True):
+        for x0 in cell_x0s:
+            bp, op = convert_cell(x0, tired=tired)
+            frame_ptrs.append((alloc.add_metasprite(pack_layer_columns(bp)), alloc.add_metasprite(pack_layer_columns(op))))
+    return frame_ptrs
+
+
+def pack_compact_flying_frames(sheet_path: Path, alloc: TileAndMetaAllocator) -> list[tuple[int, int]]:
+    """Import 12 compact NGPC-scale flying frames from tails_flying_compact_template_1x.png."""
+    im = Image.open(sheet_path).convert("RGB")
+    base_pal = {
+        (255, 255, 255): 1,
+        (240, 240, 240): 1,
+        (255, 136, 0): 2,
+        (240, 128, 0): 2,
+        (0, 0, 0): 3,
+    }
+    over_pal = {
+        (255, 68, 0): 1,
+        (240, 64, 0): 1,
+        (85, 204, 255): 2,
+        (80, 192, 240): 2,
+        (0, 0, 255): 3,
+        (0, 0, 240): 3,
+    }
+    cw, ch, pad, y_top = 40, 40, 2, 10
+    bg = {(71, 124, 83), (122, 182, 135)}
+
+    frame_ptrs: list[tuple[int, int]] = []
+    for idx in range(12):
+        x0 = pad + idx * (cw + pad)
+        bp: dict[tuple[int, int], int] = {}
+        op: dict[tuple[int, int], int] = {}
+        for py in range(ch):
+            for px in range(cw):
+                rgb = im.getpixel((x0 + px, y_top + py))
+                if rgb in bg:
+                    continue
+                rx, ry = px - (cw // 2), py - (ch - 3) + 14  # feet aligned with stock Tails (+14)
+                if rgb in base_pal:
+                    bp[(rx, ry)] = base_pal[rgb]
+                elif rgb in over_pal:
+                    ov = over_pal[rgb]
+                    op[(rx, ry)] = ov
+                    bp[(rx, ry)] = 3 if ov == 1 else 1  # opaque base behind red shoe / blue eye
+                else:
+                    raise ValueError(f"Unmapped pixel in {sheet_path} cell {idx} ({px},{py}): {rgb}")
+        b_moff = alloc.add_metasprite(pack_layer_columns(bp))
+        o_moff = alloc.add_metasprite(pack_layer_columns(op))
+        frame_ptrs.append((b_moff, o_moff))
+    return frame_ptrs
+
+
 def patch_goalpost_from_sheet(data: bytearray, sheet_path: Path, alloc: TileAndMetaAllocator) -> None:
     """Patch end-of-act goalpost/signpost base tiles and overlay metasprite pointers."""
     sheet = Image.open(sheet_path).convert("RGB")
