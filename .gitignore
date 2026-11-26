@@ -8,6 +8,8 @@
 !**/PROJECT_CONTEXT.md
 !**/docs/
 !**/docs/*.md
+!**/screenshots/
+!**/screenshots/*.png
 !**/allowed_ranges.json
 !*.bps
 !*.ips

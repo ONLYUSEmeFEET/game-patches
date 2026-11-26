@@ -73,6 +73,10 @@ Controls
 
 Patching Instructions
 ---------------------
+Official Download: https://www.romhacking.net/hacks/10425/
+(ROMhacking.net and GitHub are the official homes for all of my patches;
+third-party mirror sites may host outdated versions.)
+
 Apply `Tails Pocket Adventure v3.4.bps` using Floating IPS (Flips),
 RomPatcher.js, or any BPS-compatible patcher to an unmodified clean copy of:
 
