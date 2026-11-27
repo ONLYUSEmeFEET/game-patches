@@ -10,6 +10,7 @@ A collection of retro console ROM hacks, patches (`.bps` / `.ips`), build script
 
 | Patch | System | Folder | Formats | Official Page |
 | :--- | :--- | :--- | :--- | :--- |
+| **Godzilla: Domination! DX v0.9** | Game Boy Advance | [`godzilla-domination-dx/`](godzilla-domination-dx/) | `.bps` | *In Development* |
 | **Tails Pocket Adventure v3.4** | Neo Geo Pocket Color | [`tails-pocket-adventure/`](tails-pocket-adventure/) | `.bps` | [ROMhacking.net](https://www.romhacking.net/hacks/10425/) |
 | **Rampage - World Tour Unleashed** | Game Boy Color | [`rampage-world-tour-unleashed/`](rampage-world-tour-unleashed/) | `.ips` | [ROMhacking.net](https://www.romhacking.net/hacks/10378/) |
 | **Castlevania: Symphony of the Night Reborn v0.2** | Tiger Game.Com | [`castlevania-sotn-reborn/`](castlevania-sotn-reborn/) | `.bps`, `.ips` | [ROMhacking.net](https://www.romhacking.net/hacks/10396/) |

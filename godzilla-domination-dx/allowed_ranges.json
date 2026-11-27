@@ -1,0 +1,184 @@
+{
+  "ranges": [
+    {
+      "start": "0x002C48",
+      "end": "0x002C57",
+      "label": "hook_archive_get_ptr",
+      "kind": "hook"
+    },
+    {
+      "start": "0x0036D4",
+      "end": "0x0036D7",
+      "label": "ptr_text_slot0_lang_switch",
+      "kind": "pointer"
+    },
+    {
+      "start": "0x0042E8",
+      "end": "0x0042EF",
+      "label": "hook_battle_spawn_12entity",
+      "kind": "hook"
+    },
+    {
+      "start": "0x0044E0",
+      "end": "0x0044E3",
+      "label": "hook_init_hp_12entity",
+      "kind": "hook"
+    },
+    {
+      "start": "0x00473A",
+      "end": "0x00473D",
+      "label": "hook_player_tag_toggle",
+      "kind": "hook"
+    },
+    {
+      "start": "0x006ABC",
+      "end": "0x006ABF",
+      "label": "ptr_text_slot0_game_init",
+      "kind": "pointer"
+    },
+    {
+      "start": "0x006F64",
+      "end": "0x006F67",
+      "label": "ptr_text_slot0_menu_a",
+      "kind": "pointer"
+    },
+    {
+      "start": "0x008274",
+      "end": "0x008277",
+      "label": "ptr_text_slot0_menu_b",
+      "kind": "pointer"
+    },
+    {
+      "start": "0x00C920",
+      "end": "0x00C923",
+      "label": "ptr_text_slot0_menu_c",
+      "kind": "pointer"
+    },
+    {
+      "start": "0x00D18A",
+      "end": "0x00D18D",
+      "label": "hook_bonus_stage_toggle",
+      "kind": "hook"
+    },
+    {
+      "start": "0x012780",
+      "end": "0x012783",
+      "label": "hook_stage_order_toggle",
+      "kind": "hook"
+    },
+    {
+      "start": "0x0128C4",
+      "end": "0x0128C7",
+      "label": "hook_monster_select_input",
+      "kind": "hook"
+    },
+    {
+      "start": "0x013346",
+      "end": "0x013349",
+      "label": "hook_battle_results_icons_12entity",
+      "kind": "hook"
+    },
+    {
+      "start": "0x0135C0",
+      "end": "0x0135C3",
+      "label": "hook_custom_mode_select_input",
+      "kind": "hook"
+    },
+    {
+      "start": "0x013642",
+      "end": "0x013643",
+      "label": "custom_mode_wrap_left_12",
+      "kind": "table"
+    },
+    {
+      "start": "0x0139F2",
+      "end": "0x0139F3",
+      "label": "custom_mode_wrap_right_12",
+      "kind": "table"
+    },
+    {
+      "start": "0x013EB8",
+      "end": "0x013EBF",
+      "label": "hook_custom_mode_portrait_pal",
+      "kind": "hook"
+    },
+    {
+      "start": "0x013F6C",
+      "end": "0x013F73",
+      "label": "hook_custom_mode_name_label",
+      "kind": "hook"
+    },
+    {
+      "start": "0x014884",
+      "end": "0x014887",
+      "label": "hook_options_dx_menu",
+      "kind": "hook"
+    },
+    {
+      "start": "0x01583C",
+      "end": "0x015843",
+      "label": "hook_vs_portrait_12entity",
+      "kind": "hook"
+    },
+    {
+      "start": "0x015852",
+      "end": "0x015853",
+      "label": "vs_portrait_clamp_14",
+      "kind": "table"
+    },
+    {
+      "start": "0x0159AC",
+      "end": "0x0159B3",
+      "label": "hook_vs_screen_12entity",
+      "kind": "hook"
+    },
+    {
+      "start": "0x01AA8E",
+      "end": "0x01AA91",
+      "label": "hook_load_scene_palette",
+      "kind": "hook"
+    },
+    {
+      "start": "0x01C7A0",
+      "end": "0x01C7A7",
+      "label": "hook_battle_hud_name_right",
+      "kind": "hook"
+    },
+    {
+      "start": "0x01C830",
+      "end": "0x01C837",
+      "label": "hook_battle_hud_name_left",
+      "kind": "hook"
+    },
+    {
+      "start": "0x01CAC0",
+      "end": "0x01CAC7",
+      "label": "hook_walk_speed_12entity",
+      "kind": "hook"
+    },
+    {
+      "start": "0x032F10",
+      "end": "0x032FC7",
+      "label": "custom_mode_ui_max_table",
+      "kind": "table"
+    },
+    {
+      "start": "0x0334B8",
+      "end": "0x033517",
+      "label": "battle_hud_monster_name_tiles",
+      "kind": "table"
+    },
+    {
+      "start": "0x111A18",
+      "end": "0x112037",
+      "label": "archive_offset_table_ui_redirects",
+      "kind": "table"
+    },
+    {
+      "start": "0x3D2D00",
+      "end": "0x3D3FFF",
+      "label": "cave_thumb_hooks_and_tables",
+      "kind": "cave"
+    }
+  ]
+}
