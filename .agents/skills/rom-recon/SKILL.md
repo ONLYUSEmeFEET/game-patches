@@ -17,7 +17,9 @@ Perform disciplined, read-only reconnaissance on any retro console ROM so subseq
 
 2. **Trace Before Proposing Changes**
    - Inspect existing build scripts, `.asm` files, or disassemblies to find relevant routines, tables, and callers.
+   - **On GBA / Genesis, use Ghidra** (`rom-ghidra` skill, `ghidra-re` MCP server) for xrefs ("who calls / who reads / who points here"), function boundaries and disassembly. Use `python -m tools.patchkit.peek` to dump, `--expect`, and `--find` raw bytes and pointer patterns.
    - **Enumerate all instances & rendering paths:** Never assume a cutscene OAM sprite is reused in playable gameplay (or vice versa). Before patching a recurring asset (vehicle, portrait, boss, title screen), check both OAM tables and Scroll Plane / BG tilemaps across every stage, cutscene, and intro phase.
+   - **Trace Actor Dispatch Tables Before Hooking:** Never hook a routine purely because it writes the target struct offset (e.g., frame index) near a related RAM variable. Trace forward from the screen's `SpawnSprite(actor_type, archive_idx)` call through the actor dispatch/jump table to confirm the exact handler executed by that screen.
    - For every address or symbol discovered, record:
      - **File offset** and **CPU address** (when banked or mapped, e.g., `ROM 0x1FAC00` = `CPU 0x3FAC00`).
      - **Exact original bytes** at candidate hook sites (needed for `assert_and_patch`).

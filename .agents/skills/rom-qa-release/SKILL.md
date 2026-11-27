@@ -18,8 +18,15 @@ Verify patched ROM behavior, enforce automated build/diff gates, and cut clean, 
      - `patchkit.write_bps()` passes full BPS1 round-trip verification (source CRC32, target CRC32, patch CRC32, and byte-for-byte reconstructed ROM match).
    - Never weaken assertions, diff ranges, or tests just to make a run pass.
 
+1b. **Goldfish Diff Review (required for releases)**
+   - After the gates pass, run the `rom-egm-review` Phase 4 diff review (fresh `ground_truth` + `hook_safety` subagents) over everything changed since the last release commit, against the approved spec(s) in `<project>/specs/`.
+   - Resolve every Blocker/Major (Fix, or Reject with evidence) and log the results in the spec's Review Log before you package.
+
 2. **Execute Emulator Verification**
+   - **Scripted RAM checks first:** `python -m tools.emu.ramcheck --script <project>/qa/ramchecks/<x>.json --rom <built>`
+     for every script in the project (exit 0 = PASS). These run headless in a libretro core in under a second, with no window. See `tools/emu/README.md`.
    - **Never rely solely on offline tile decode-back for user-reported visual bugs or multi-phase screens.** Boot the built ROM in a headless emulator capture and inspect live frames with `read_file` across both **transition/intro frames** and **settled frames** (after copyright/menu text appears).
+   - **Sync Multi-Screen Captures on Pixel/Screen State:** When driving headless libretro cores (`S:\Retroarch\cores\<core>_libretro.dll`) across menus or cutscenes to capture release screenshots, gate button taps on pixel/screen-state predicates (logo settled, menu cursor highlighted, portrait visible) instead of blind fixed frame counts, and inspect every captured PNG via `read_file` before committing.
    - **Windows / PowerShell Headless RetroArch Recipe:**
      ```powershell
      $rom = "`"C:\path\to\patched.ngc`""  # Always double-quote paths with spaces inside ArgumentList
