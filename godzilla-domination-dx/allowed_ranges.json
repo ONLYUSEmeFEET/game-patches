@@ -55,9 +55,27 @@
       "kind": "pointer"
     },
     {
+      "start": "0x00CBFE",
+      "end": "0x00CC05",
+      "label": "hook_custom_stage_launch",
+      "kind": "hook"
+    },
+    {
+      "start": "0x00CD4C",
+      "end": "0x00CD51",
+      "label": "hook_story_news_portrait_230",
+      "kind": "hook"
+    },
+    {
       "start": "0x00D18A",
       "end": "0x00D18D",
       "label": "hook_bonus_stage_toggle",
+      "kind": "hook"
+    },
+    {
+      "start": "0x012458",
+      "end": "0x01245B",
+      "label": "hook_monster_select_big_nameplate_229",
       "kind": "hook"
     },
     {
@@ -73,9 +91,27 @@
       "kind": "hook"
     },
     {
+      "start": "0x012F42",
+      "end": "0x012F45",
+      "label": "hook_monster_select_stat_bars_and_nameplates",
+      "kind": "hook"
+    },
+    {
+      "start": "0x015D48",
+      "end": "0x015D4B",
+      "label": "hook_gameover_portrait_skin",
+      "kind": "hook"
+    },
+    {
       "start": "0x013346",
       "end": "0x013349",
       "label": "hook_battle_results_icons_12entity",
+      "kind": "hook"
+    },
+    {
+      "start": "0x01354C",
+      "end": "0x01354F",
+      "label": "hook_custom_resolve_random_12",
       "kind": "hook"
     },
     {
@@ -157,7 +193,7 @@
       "kind": "hook"
     },
     {
-      "start": "0x032F10",
+      "start": "0x032EF8",
       "end": "0x032FC7",
       "label": "custom_mode_ui_max_table",
       "kind": "table"

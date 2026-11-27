@@ -113,14 +113,20 @@
 - `0x0203FFFB` (u8, **hack-allocated**): `STAGE` order toggle (`0` = JP Random, `1` = US Fixed).
 - `0x0203FFFA` (u8, **hack-allocated**): Story Mode Bonus Stage completion bitmask (bit 0 = Stage 2 UFO Assault, bit 1 = Stage 5 SDF Jet Assault).
 - `0x0203FFF9` (u8, **hack-allocated**): Active Options screen page (`0` = Standard, `1` = DX Options: `1P TAG` / `BONUS` / `STAGE`).
+- `0x0203FFF8` (u8, **hack-allocated**): `NIGHT_TOKYO_FLAG` (`1` = active Custom Mode battle is Nighttime Tokyo `"Tokyo 1"`, cleared on menus/other stages).
 
 ## 6. Confirmed Facts vs. Open Checks
 - **Confirmed**: Zero hidden/unreleased playable monsters (no Gigan/Anguirus), zero hidden playable stages beyond the 2 restored USA Bonus Stages, 20 BGM tracks (`0x1119C8`), 127 SFX/roar entries, and zero unused Connie Matsu art/strings.
-- **Confirmed**: Monster Select `Speed/Power/Special` bars (`0x08012F3C`) are a 6-frame cosmetic sprite; real movement speeds (`0x0801CAC0`) and starting HP (`0x080044E0`) are now differentiated across all 12 fighters.
-- **Confirmed (mGBA QA)**: Top-of-EWRAM hack flags (`0x0203FFF9..0x0203FFFE`) are untouched by the game engine; all v0.9 features (12-entity Custom Mode, movie-accurate 69-frame Mini MKG ingested from `sprite_sheets_to_mod/mini_mkg_template_1x.png`, official Domination-font `JPN[229]` nameplates, Shadow MKG & Eva-01 Megalon-01 VS portraits, Battle Results 12-entity mini portrait icons on `OBJ Pal 8/9/14/15`, 12-entity Battle HUD names, immediate post-`FIGHT!` attacks, and zero palette leaks) verified visually in mGBA.
+- **Confirmed (v1.0)**:
+  - `0x01354C` (`cave_custom_resolve_random`): Custom Mode fighter ID `13` (`RANDOM`, `?` portrait in 14f `JPN[213]`, `"RANDOM"` in 26f `JPN[240]`) rolls `1..12` (allowing duplicates) on match confirm.
+  - `0x00CBFE` (`cave_custom_stage_launch`) + `0x032EF8/0x032F34/0x032F70/0x032FAC` (`max 7 -> 9`) + 9f `JPN[233]` (`USA[126]` + `"Tokyo 1"` + `"Random"`): Stage 7 = Nighttime Tokyo (`NIGHT_TOKYO_FLAG = 1`, swaps Tokyo `JPN[262]` BG palette `0..13` to midnight-indigo + glowing lit windows while preserving HUD BG Pal 14..15 and Tokyo BGM), Stage 8 = Random (`0..7`).
+  - `0x012F42` (`cave_stat_bars`): Single-Player Monster Select live-switches 14f `JPN[215]` DX Stat Bars (`0..5 <-> 8..13`), 15f `JPN[229]` unique big Domination-font nameplates for all 12 fighters (`GODZILLA '03`, `MOTHRA '03`, `KIRYU™`, + 6 DX alts), and dual 493-line English text tables (`eng_text_base` w/ `KIRYU`, `eng_text_alt` w/ all 6 DX variant names cleanly re-wrapped).
+  - `cave_init_hp` (`0x0044E0`) & `cave_walk_speed` (`0x01CAC0`) now check `SKIN_MASK` so Story Mode DX variants also receive their DX HP & Speed stats in battle.
+  - Movie-accurate 69-frame Mini Mecha-King Ghidorah (`mini_mkg_template_1x.png` + `MKG_PAL3_RGB555` w/ emerald `0x4AE6` & crimson organic eyes `0x043F`) and official 2P Giant VS Shadow MKG 3P/4P portrait (`JPN[231]` f10) decoded directly from built ROM and verified.
+  - `0x012458` (`cave_nameplate_229`): Single-Player Monster Select big Domination-font nameplate (`JPN[229]`, 15f) maps all 6 toggled DX variants (`1..6 -> 9..14`) with custom distressed `BMP_1` & `BMP_F` glyphs.
+  - `0x015D48` (`cave_gameover_portrait`, Actor `0x7C`): True Story Mode Game Over giant portrait (`JPN[243]`, 15f) handler; reads `0x03001850`, checks `SKIN_MASK`, and displays `f9..f14` for all 6 DX variants (`f7` for Kiryu, `mid - 1` for vanilla).
+  - `0x00CD4C` (`cave_news_portrait`): Story Mode Connie News Cutout (`JPN[230]`, 15f) maps `1..6 -> 9..14` using the true Connie News 256-color OBJ palette **`JPN[365]`** (516 B, DMA-loaded to `0x03002D50` at `0x0800A4E6`); `USA[143]` (`Godzilla '99`, `Classic Mechagodzilla`, `Mothra '92`) is natively compatible with `JPN[365]`, and `Shadow MKG`, `Fire Rodan`, and `Megalon-01` are recolored directly in `JPN[365]`.
+  - Full Japanese audit: 0 non-ASCII/`@` bytes in both English text tables & Credits (`0x048E1F..0x049A00`), all remaining UI sprites (`JPN[210/211/217]`) verified English, MKG final boss (`JPN[76]`) untouched, and Bonus Stage hook (`0x00D18A`) intact.
 
-## 7. v1.0 Roadmap / Wishlist
-- **Training Mode**: Hitboxes/hurtboxes overlay, frame data, and damage readouts.
-- **Random Select**: Enhanced random fighter & random stage selection.
-- **Nighttime Stage Variants**: Dusk/night alternate stage palettes.
-- **Bug Fixes & Community Polish**: Address any edge cases reported during v0.9 playtesting.
+## 7. v1.0 Status
+- **v1.0 Complete** (Training Mode dropped per user request).

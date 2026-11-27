@@ -10,12 +10,18 @@ A collection of retro console ROM hacks, patches (`.bps` / `.ips`), build script
 
 | Patch | System | Folder | Formats | Official Page |
 | :--- | :--- | :--- | :--- | :--- |
-| **Godzilla: Domination! DX v0.9** | Game Boy Advance | [`godzilla-domination-dx/`](godzilla-domination-dx/) | `.bps` | *In Development* |
+| **Godzilla: Domination! DX v1.0** | Game Boy Advance | [`godzilla-domination-dx/`](godzilla-domination-dx/) | `.bps` | *Ready for Release* |
 | **Tails Pocket Adventure v3.4** | Neo Geo Pocket Color | [`tails-pocket-adventure/`](tails-pocket-adventure/) | `.bps` | [ROMhacking.net](https://www.romhacking.net/hacks/10425/) |
 | **Rampage - World Tour Unleashed** | Game Boy Color | [`rampage-world-tour-unleashed/`](rampage-world-tour-unleashed/) | `.ips` | [ROMhacking.net](https://www.romhacking.net/hacks/10378/) |
 | **Castlevania: Symphony of the Night Reborn v0.2** | Tiger Game.Com | [`castlevania-sotn-reborn/`](castlevania-sotn-reborn/) | `.bps`, `.ips` | [ROMhacking.net](https://www.romhacking.net/hacks/10396/) |
 | **Sonic Jam Reborn v0.2** | Tiger Game.Com | [`sonic-jam-reborn/`](sonic-jam-reborn/) | `.bps`, `.ips` | [ROMhacking.net](https://www.romhacking.net/hacks/10416/) |
 | **Ranger of Rage 2** | Sega Genesis / Mega Drive | [`ranger-of-rage-2/`](ranger-of-rage-2/) | `.ips` | [ROMhacking.net](https://www.romhacking.net/hacks/4107/) |
+
+## Featured Screenshots — Godzilla: Domination! DX v1.0
+
+| Title Screen (`DX`) | Nighttime Tokyo (`Tokyo 1`) 4P Battle |
+| :---: | :---: |
+| ![Godzilla Domination DX Title Screen](godzilla-domination-dx/screenshots/title_screen.png) | ![Nighttime Tokyo 1 4P Battle](godzilla-domination-dx/screenshots/battle_tokyo1_night.png) |
 
 ## Featured Screenshots — Tails Pocket Adventure
 

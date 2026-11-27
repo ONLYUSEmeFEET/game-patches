@@ -1,4 +1,4 @@
-# Godzilla: Domination! DX (v0.9)
+# Godzilla: Domination! DX (v1.0)
 
 **Godzilla: Domination! DX** is a comprehensive Game Boy Advance ROM hack and English localization of **Gojira: Kaijuu Dairantou Advance (Japan)** (`AG4J`) by **AJ Ryan (@ONLYUSEmeFEET)**.
 
@@ -54,29 +54,31 @@ Inside **Options**, press **`Select`**, **`L`**, or **`R`** to flip between Stan
 | :---: | :---: |
 | ![Title Screen](screenshots/title_screen.png) | ![DX Options](screenshots/dx_options.png) |
 
-| Monster Select — Official `KIRYU™` | Monster Select — Movie-Accurate Mini MKG |
+| Monster Select — Mini MKG + Live DX Stats | Monster Select — Fire Rodan + Live DX Stats |
 | :---: | :---: |
-| ![Select Kiryu](screenshots/select_kiryu_tm.png) | ![Select Mecha-King Ghidorah](screenshots/select_mecha_king_ghidorah.png) |
+| ![Select Mecha-King Ghidorah](screenshots/select_mecha_king_ghidorah.png) | ![Select Fire Rodan](screenshots/select_fire_rodan.png) |
 
-| 2P Giant VS — Shadow MKG vs. Godzilla | 4P VS — Shadow MKG & Eva-01 Megalon-01 |
+| Monster Select — Megalon-01 + Big Nameplate | Story Mode — Shadow MKG News & Dialogue |
 | :---: | :---: |
-| ![2P Giant VS MKG](screenshots/story_2p_vs_mkg.png) | ![4P VS Screen](screenshots/vs_4p_hybrid.png) |
+| ![Select Megalon-01](screenshots/select_purple_megalon.png) | ![Story News MKG](screenshots/story_news_mkg.png) |
 
-| Custom Mode — 12-Entity Roster (Set A) | Custom Mode — 12-Entity Roster (Set B) |
+| Custom Mode — 12-Fighter `RANDOM` & `Tokyo 1` | 4P VS — Shadow MKG, Fire Rodan & Megalon-01 |
 | :---: | :---: |
-| ![Custom Mode Set A](screenshots/custom_12entity_setA.png) | ![Custom Mode Set B](screenshots/custom_12entity_setB.png) |
+| ![Custom Mode RANDOM and Tokyo 1](screenshots/custom_random_tokyo1.png) | ![4P VS Screen](screenshots/vs_4p_hybrid.png) |
 
-| Live 4P Battle — 12-Entity Mirror Match & HUD | Battle Results — 12-Entity Mini Icons |
+| Live 4P Battle — Nighttime Tokyo (`Tokyo 1`) | 2P Giant VS — Shadow MKG vs. Godzilla |
 | :---: | :---: |
-| ![Live 4P Battle](screenshots/battle_4p_hybrid.png) | ![Purple Megalon](screenshots/select_purple_megalon.png) |
+| ![Nighttime Tokyo 1 Battle](screenshots/battle_tokyo1_night.png) | ![2P Giant VS MKG](screenshots/story_2p_vs_mkg.png) |
 
 ---
 
-## Roadmap / Wishlist for v1.0
-- **Training Mode** (live hitbox/hurtbox display, frame data, and damage readouts)
-- **Random Select** enhancements (including random stage & fighter selection in Custom Mode)
-- **Nighttime Stage Variants** (alternate dusk/night palettes for city arenas)
-- **Community Bug Fixes & Polish** based on v0.9 playtesting feedback
+## What's New in v1.0
+- **Custom Mode 12-Fighter Random Select (`RANDOM` / `?`)**: Cycle past `MEGALON-01` to select `RANDOM` on any player slot (`P1`–`P4`); resolves secretly across all 12 fighters on match start (mirror matches allowed).
+- **New Custom Mode Stage — Nighttime Tokyo (`Tokyo 1`) + 8-Stage `Random`**: Appended right after the 7 vanilla stages in Custom Mode (`Tokyo 2..Nova-b`, `Tokyo 1`, `Random`). `Tokyo 1` transforms Tokyo into a midnight metropolis with a deep indigo sky, moonlit streets, glowing warm-yellow lit skyscraper windows, and original Tokyo BGM.
+- **Live DX Stat Bars & Unified Story Mode DX Stats**: Pressing `Select` on Single-Player Monster Select now live-updates the **Power** (HP) and **Speed** bars to reflect each DX variant's real trade-offs—and those DX HP & Speed stats now apply in Story Mode battles too.
+- **All 12 Unique Big Domination-Font Nameplates**: Every fighter—including `GODZILLA '03`, `MOTHRA '03`, `KIRYU™`, and all 6 DX variants—now has its own unique distressed Domination-font nameplate across Monster Select and 2P Giant VS.
+- **Dynamic Story Mode Dialogue Names**: Connie Matsu's GWN broadcasts, mid-stage briefings, and victory endings now call Kiryu `KIRYU` and dynamically update to `GODZILLA '99`, `MECHA-GHIDORAH`, `FIRE RODAN`, `MECHAGODZILLA`, `MOTHRA '92`, or `MEGALON-01` when playing as a DX variant, cleanly re-wrapped to fit the dialogue box.
+- **Refined 69-Frame Mini Mecha-King Ghidorah & 4P Shadow MKG Portrait**: Warm titanium center head/neck/chest cuirass, exact emerald eye & chest gem, crimson red organic eyes, metal-lined bronze-gold solar wings, and the official 2P Giant VS Shadow MKG silhouette in 3P/4P VS.
 
 ---
 
@@ -90,9 +92,9 @@ Apply **`Godzilla Domination DX.bps`** to a clean Japanese ROM using **[Floating
   - SHA-1: `985599e9f65d58d67170ca9ad3eb406c6ed25217`
 - **Patched Output ROM**: `Godzilla Domination DX.gba` (8 MB)
   - Size: `8,388,608` bytes (8 MB)
-  - CRC32: `BDBB1E5F`
-  - MD5: `1782704cb2e8d6376a172bc5413fb71e`
-  - SHA-1: `087489bd20b5b618c23abc8c386914a3b106637b`
+  - CRC32: `C5BA421E`
+  - MD5: `830cb6143f01d350dfbee065d5c0eb0b`
+  - SHA-1: `bbf82e33f25595a3f3d6855a10b8b5ceadb60c36`
 - **BPS Patch**: `Godzilla Domination DX.bps`
   - Patch CRC32: `2144DF1C` (round-trip verified)
 
